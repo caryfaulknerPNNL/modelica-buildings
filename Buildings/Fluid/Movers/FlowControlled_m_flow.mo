@@ -53,8 +53,8 @@ model FlowControlled_m_flow
 
   Modelica.Blocks.Interfaces.RealInput m_flow_in(
     final unit="kg/s",
-    nominal=m_flow_nominal)
-    if inputType == Buildings.Fluid.Types.InputType.Continuous
+    nominal=m_flow_nominal) if
+       inputType == Buildings.Fluid.Types.InputType.Continuous
     "Prescribed mass flow rate"
     annotation (Placement(transformation(
         extent={{-20,-20},{20,20}},
@@ -77,7 +77,6 @@ equation
     or if the performance record is unreasonable. Please verify your model, and
     consider using one of the other pump or fan models.");
 
-equation
   if use_inputFilter then
     connect(filter.y, m_flow_actual) annotation (Line(
       points={{41,70.5},{44,70.5},{44,50},{110,50}},

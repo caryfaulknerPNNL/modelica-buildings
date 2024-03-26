@@ -226,8 +226,8 @@ block DamperValves
   Buildings.Controls.OBC.CDL.Continuous.Divide VDisSet_flowNor
     "Normalized setpoint for discharge volume flow rate"
     annotation (Placement(transformation(extent={{200,270},{220,290}})));
-  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor
-    if not have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor if
+       not have_preIndDam
     "Normalized discharge volume flow rate"
     annotation (Placement(transformation(extent={{200,210},{220,230}})));
   Buildings.Controls.OBC.CDL.Continuous.PIDWithReset conDam(
@@ -275,8 +275,8 @@ block DamperValves
   Buildings.Controls.OBC.CDL.Continuous.Switch swi1
     "Hot water valve position, close the valve when the zone is not in heating state"
     annotation (Placement(transformation(extent={{80,-10},{100,10}})));
-  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(final k=1)
-    if have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(final k=1) if
+       have_preIndDam
     "Block that can be disabled so remove the connection"
     annotation (Placement(transformation(extent={{200,90},{220,110}})));
   Buildings.Controls.OBC.CDL.Integers.Sources.Constant occ(

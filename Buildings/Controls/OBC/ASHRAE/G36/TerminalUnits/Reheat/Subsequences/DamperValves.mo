@@ -274,8 +274,8 @@ block DamperValves
     annotation (Placement(transformation(extent={{280,-110},{300,-90}})));
   Buildings.Controls.OBC.CDL.Continuous.Switch damPosUno "Output damper position"
     annotation (Placement(transformation(extent={{280,-30},{300,-10}})));
-  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor
-    if not have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor if
+       not have_preIndDam
     "Normalized discharge volume flow rate"
     annotation (Placement(transformation(extent={{240,70},{260,90}})));
   Buildings.Controls.OBC.CDL.Continuous.Divide VDisSet_flowNor
