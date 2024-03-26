@@ -74,8 +74,8 @@ extends Buildings.BaseClasses.BaseIcon;
     annotation (Placement(transformation(extent={{
             -120,-80},{-100,-60}}), iconTransformation(extent={{-120,-80},{-100,
             -60}})));
-  Modelica.Blocks.Interfaces.RealInput vAir_in
-    if use_vAir_in "Air velocity" annotation (
+  Modelica.Blocks.Interfaces.RealInput vAir_in if
+       use_vAir_in "Air velocity" annotation (
       Placement(transformation(extent={{-120,-20},{-100,0}}),
         iconTransformation(extent={{-120,-20},{-100,0}})));
   Modelica.Blocks.Interfaces.RealInput M_in(

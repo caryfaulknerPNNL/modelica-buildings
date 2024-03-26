@@ -64,8 +64,8 @@ protected
     hOut(start=Medium.specificEnthalpy_pTX(
                  p=p_start,
                  T=T_start,
-                 X=X_start)))
-      if useSteadyStateTwoPort "Model for steady-state balance if nPorts=2"
+                 X=X_start))) if
+         useSteadyStateTwoPort "Model for steady-state balance if nPorts=2"
         annotation (Placement(transformation(extent={{20,0},{40,20}})));
   Buildings.Fluid.Interfaces.ConservationEquation dynBal(
     final simplify_mWat_flow = simplify_mWat_flow,
@@ -81,8 +81,8 @@ protected
     final initialize_p = initialize_p,
     m(start=V*rho_start),
     nPorts=nPorts,
-    final mSenFac=mSenFac)
-      if not useSteadyStateTwoPort "Model for dynamic energy balance"
+    final mSenFac=mSenFac) if
+         not useSteadyStateTwoPort "Model for dynamic energy balance"
     annotation (Placement(transformation(extent={{60,0},{80,20}})));
 
   // Density at start values, used to compute initial values and start guesses
@@ -176,11 +176,11 @@ equation
     annotation (Line(points={{-31,0},{-38,0}},   color={0,0,127}));
   connect(heaFloSen.port_b, preTem.port)
     annotation (Line(points={{-70,0},{-65,0},{-60,0}},    color={191,0,0}));
-  connect(heaFloSen.Q_flow, steBal.Q_flow) annotation (Line(points={{-80,-10},{
+  connect(heaFloSen.Q_flow, steBal.Q_flow) annotation (Line(points={{-80,-11},{
           -80,-16},{6,-16},{6,18},{18,18}},
                                      color={0,0,127}));
-  connect(heaFloSen.Q_flow, dynBal.Q_flow) annotation (Line(points={{-80,-10},{
-          -80,-10},{-80,-16},{6,-16},{6,24},{50,24},{50,16},{58,16}},
+  connect(heaFloSen.Q_flow, dynBal.Q_flow) annotation (Line(points={{-80,-11},{
+          -80,-11},{-80,-16},{6,-16},{6,24},{50,24},{50,16},{58,16}},
                                                                color={0,0,127}));
   annotation (
 defaultComponentName="vol",

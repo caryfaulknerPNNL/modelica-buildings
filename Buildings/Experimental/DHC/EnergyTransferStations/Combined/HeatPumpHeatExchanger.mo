@@ -349,7 +349,7 @@ model HeatPumpHeatExchanger
     annotation (Placement(transformation(extent={{-10,24},{10,44}})));
   Fluid.Sources.Boundary_pT sinSHW(
     redeclare final package Medium = MediumBui,
-    nPorts=1)  if have_hotWat
+    nPorts=1) if  have_hotWat
     "Sink for service hot water" annotation (Placement(
       transformation(
       extent={{10,-10},{-10,10}},
@@ -449,8 +449,8 @@ model HeatPumpHeatExchanger
   Buildings.Controls.OBC.CDL.Continuous.Max priOve if have_varFloCon
     "Ensure primary overflow"
     annotation (Placement(transformation(extent={{-60,270},{-40,290}})));
-  Buildings.Controls.OBC.CDL.Continuous.Multiply loaHHW
-    if have_varFloEva or have_varFloCon "Heating load"
+  Buildings.Controls.OBC.CDL.Continuous.Multiply loaHHW if
+       have_varFloEva or have_varFloCon "Heating load"
     annotation (Placement(transformation(extent={{-140,270},{-120,290}})));
 
 equation

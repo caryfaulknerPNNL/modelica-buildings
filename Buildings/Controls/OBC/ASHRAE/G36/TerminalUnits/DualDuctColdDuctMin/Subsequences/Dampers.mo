@@ -243,8 +243,8 @@ block Dampers
     final y_reset=0) if not have_preIndDam
     "Cooling damper position controller"
     annotation (Placement(transformation(extent={{220,160},{240,180}})));
-  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor
-    if not have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor if
+       not have_preIndDam
     "Normalized discharge volume flow rate"
     annotation (Placement(transformation(extent={{140,100},{160,120}})));
   Buildings.Controls.OBC.CDL.Continuous.Switch cooDamPos
@@ -254,8 +254,8 @@ block Dampers
     "Not proven on"
     annotation (Placement(transformation(extent={{180,20},{200,40}})));
   Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(
-    final k=1)
-    if have_preIndDam
+    final k=1) if
+       have_preIndDam
     "Block that can be disabled so remove the connection"
     annotation (Placement(transformation(extent={{180,60},{200,80}})));
   Buildings.Controls.OBC.CDL.Continuous.Divide VDisSet_flowNor1
@@ -271,13 +271,13 @@ block Dampers
     final y_reset=0) if not have_preIndDam
     "Heating damper position controller"
     annotation (Placement(transformation(extent={{200,-90},{220,-70}})));
-  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor1
-    if not have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor1 if
+       not have_preIndDam
     "Normalized discharge volume flow rate"
     annotation (Placement(transformation(extent={{120,-160},{140,-140}})));
   Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai1(
-    final k=1)
-    if have_preIndDam
+    final k=1) if
+       have_preIndDam
     "Block that can be disabled so remove the connection"
     annotation (Placement(transformation(extent={{180,-190},{200,-170}})));
   Buildings.Controls.OBC.CDL.Continuous.Switch heaDamPos

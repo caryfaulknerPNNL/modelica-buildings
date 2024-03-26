@@ -136,14 +136,14 @@ protected
     annotation (Placement(transformation(extent={{-140,-50},{-120,-30}})));
   Buildings.Controls.OBC.CDL.Continuous.GreaterThreshold greThr3(
     final t=17,
-    final h=Thys)
-    if have_hotWatCoi
+    final h=Thys) if
+       have_hotWatCoi
     "Check if the supply temperature is less than the setpoint by a threshold value"
     annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
   Buildings.Controls.OBC.CDL.Continuous.GreaterThreshold greThr4(
     final t=8,
-    final h=Thys)
-    if have_hotWatCoi
+    final h=Thys) if
+       have_hotWatCoi
     "Check if the supply temperature is less than the setpoint by a threshold value"
     annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));
   Buildings.Controls.OBC.CDL.Logical.TrueDelay truDel2(
@@ -162,14 +162,14 @@ protected
     annotation (Placement(transformation(extent={{120,-100},{140,-80}})));
   Buildings.Controls.OBC.CDL.Continuous.LessThreshold lesThr2(
     final t=0.85,
-    final h=posHys)
-    if have_hotWatCoi
+    final h=posHys) if
+       have_hotWatCoi
     "Check if the hot water valve position is less than a threshold value"
     annotation (Placement(transformation(extent={{-120,-190},{-100,-170}})));
   Buildings.Controls.OBC.CDL.Continuous.GreaterThreshold greThr5(
     final t=0.95,
-    final h=posHys)
-    if have_hotWatCoi
+    final h=posHys) if
+       have_hotWatCoi
     "Check if the hot water valve position is greater than a threshold value"
     annotation (Placement(transformation(extent={{-120,-150},{-100,-130}})));
   Buildings.Controls.OBC.CDL.Logical.Latch lat2 if have_hotWatCoi
@@ -180,8 +180,8 @@ protected
     annotation (Placement(transformation(extent={{80,-150},{100,-130}})));
   Buildings.Controls.OBC.CDL.Continuous.LessThreshold lesThr3(
     final t=0.1,
-    final h=posHys)
-    if have_hotWatCoi
+    final h=posHys) if
+       have_hotWatCoi
     "Check if the hot water valve position is less than a threshold value"
     annotation (Placement(transformation(extent={{-120,-236},{-100,-216}})));
   Buildings.Controls.OBC.CDL.Logical.Latch lat3 if have_hotWatCoi

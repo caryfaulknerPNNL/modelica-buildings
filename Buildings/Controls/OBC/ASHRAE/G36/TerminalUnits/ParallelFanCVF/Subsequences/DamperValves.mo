@@ -256,8 +256,8 @@ block DamperValves
   Buildings.Controls.OBC.CDL.Continuous.Divide VDisSet_flowNor
     "Normalized setpoint for discharge volume flow rate"
     annotation (Placement(transformation(extent={{220,140},{240,160}})));
-  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor
-    if not have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor if
+       not have_preIndDam
     "Normalized discharge volume flow rate"
     annotation (Placement(transformation(extent={{220,80},{240,100}})));
   Buildings.Controls.OBC.CDL.Continuous.PIDWithReset conDam(
@@ -270,8 +270,8 @@ block DamperValves
     final y_reset=0) if not have_preIndDam
     "Damper position controller"
     annotation (Placement(transformation(extent={{260,140},{280,160}})));
-  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(final k=1)
-    if have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(final k=1) if
+       have_preIndDam
     "Block that can be disabled so remove the connection"
     annotation (Placement(transformation(extent={{180,-40},{200,-20}})));
   Buildings.Controls.OBC.CDL.Continuous.Switch swi3 "Air damper position"

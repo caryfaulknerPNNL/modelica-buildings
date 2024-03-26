@@ -205,8 +205,8 @@ block DampersDualSensors
   Buildings.Controls.OBC.CDL.Continuous.Switch cooDamPos
     "Output cooling damper position"
     annotation (Placement(transformation(extent={{280,20},{300,40}})));
-  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor
-    if not have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor if
+       not have_preIndDam
     "Normalized discharge volume flow rate"
     annotation (Placement(transformation(extent={{240,120},{260,140}})));
   Buildings.Controls.OBC.CDL.Continuous.Divide VDisSet_flowNor
@@ -309,8 +309,8 @@ block DampersDualSensors
   Buildings.Controls.OBC.CDL.Continuous.Switch heaDamPos
     "Output heating damper position"
     annotation (Placement(transformation(extent={{280,-280},{300,-260}})));
-  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor1
-    if not have_preIndDam
+  Buildings.Controls.OBC.CDL.Continuous.Divide VDis_flowNor1 if
+       not have_preIndDam
     "Normalized discharge volume flow rate"
     annotation (Placement(transformation(extent={{240,-180},{260,-160}})));
   Buildings.Controls.OBC.CDL.Continuous.Divide VDisSet_flowNor1
