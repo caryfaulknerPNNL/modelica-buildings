@@ -1,4 +1,4 @@
-within Buildings;
+﻿within Buildings;
 package AirCleaning
 
   model PAC "In-room portable air cleaner"
@@ -61,7 +61,9 @@ package AirCleaning
     for i in 1:Medium.nC loop
       yC_flow[i]  = booleanToReal.y*(-flowPAC)*eff[i]*nPACs*C[i];
     end for;
-    annotation (Icon(graphics={
+      annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"),
+                  Dialog(group = "Integer"),
+                Icon(graphics={
           Ellipse(
             extent={{-30,68},{32,50}},
             lineColor={28,108,200},
@@ -75,109 +77,15 @@ package AirCleaning
           Line(points={{-30,60},{-30,-50}}, color={28,108,200}),
           Line(points={{32,60},{32,-50}}, color={28,108,200})}), Documentation(
           info="<html>
-<p>This Portable Air Cleaner(PAC) model calculates the concentration outflow from the PAC (<span style=\"font-family: Bookman Old Style;\">yC_flow</span>) based on the following equation:</p>
-<p align=\"center\"><img src=\"modelica://AirCleaning/Resources/Images/equations/equation-F4F4fxY0.png\" alt=\"C_PAC = eff_PAC*V_PAC*c_zone\"/></p>
-<p><br>where <img src=\"modelica://AirCleaning/Resources/Images/equations/equation-yeh5Si0b.png\" alt=\"C_PAC\"/> is the rate of pathogen removal by the PAC, <img src=\"modelica://AirCleaning/Resources/Images/equations/equation-UOzewxDq.png\" alt=\"eff_PAC\"/> is the pathogen removal efficency, <img src=\"modelica://AirCleaning/Resources/Images/equations/equation-sBG4s1fx.png\" alt=\"V_PAC\"/> is the volumetric airflow rate of the PAC, and <img src=\"modelica://AirCleaning/Resources/Images/equations/equation-MzmFpiOt.png\" alt=\"c_zone\"/> is the pathogen concentration in the zone where the PAC is located.</p>
-<p>The energy(<span style=\"font-family: Courier New;\">yE_PAC</span>) and power output(<span style=\"font-family: Courier New;\">yP_PAC)</span> are calculated using the rated power(<span style=\"font-family: Courier New;\">kpow</span>)</p>
+<p>This model is designed to simulate the removal of airborne contaminants using a portable air cleaner(PAC).The PAC model calculates the mass flow rate of the contaminants of the outflow from the PAC(<span style=\"font-family: Courier New;\">yC_flow[]</span>) based on the equation described below when the PAC is proven on(<span style=\"font-family: Courier New;\">uPACEna</span>). The PACs are modeled to consume energy using a constant power rating (<code>kpow</code>) and heat is dissipated into the zone based on the consumed power(<span style=\"font-family: Courier New;\">yP_PAC</span>).<span style=\"font-family: Courier New;\">yP_PAC</span>, and total energy output (<span style=\"font-family: Courier New;\">yE_PAC</span>), are calculated using the number of PACs in the zone(<span style=\"font-family: Courier New;\">nPACs</span>) and (<span style=\"font-family: Courier New;\">kpow</span>). </p>
+<h4>Main Equations </h4>
+<p align=\"center\"><span style=\"font-family: Courier New;\">Ċ</span><sub>PAC</sub> = eff<sub>PAC</sub>* <span style=\"font-family: Courier New;\">V̇</span><sub>PAC</sub>*c<sub>zone</sub> </p>
+<p>where <span style=\"font-family: Courier New;\">Ċ</span><sub>PAC</sub> is the rate of pathogen removal by the PAC, eff<sub>PAC</sub> the pathogen removal efficency, <span style=\"font-family: Courier New;\">V̇</span><sub>PAC</sub> is the volumetric airflow rate of the PAC, and c<sub>zone</sub> is the pathogen concentration in the zone where the PAC is located.</p>
+<h4>Assumptions</h4>
+The model assumes well-mixed zones with uniform concentrations.
+
 </html>"));
   end PAC;
-
-  model OutputVariableSelection
-    "This model set the variables that will be output in .mat file"
-    annotation (__Dymola_selections={Selection(name="SelectedVariable",match={
-    MatchVariable(name="flo.wes.air.vol.T", newName="flo.wes.air.vol.T"),
-    MatchVariable(name="flo.sou.air.vol.T", newName="flo.sou.air.vol.T"),
-    MatchVariable(name="flo.nor.air.vol.T", newName="flo.nor.air.vol.T"),
-    MatchVariable(name="flo.eas.air.vol.T", newName="flo.eas.air.vol.T"),
-    MatchVariable(name="flo.cor.air.vol.T", newName="flo.cor.air.vol.T"),
-    MatchVariable(name="flo.wes.air.senRelHum1.phi", newName="flo.wes.air.senRelHum.phi"),
-    MatchVariable(name="flo.sou.air.senRelHum1.phi", newName="flo.sou.air.senRelHum.phi"),
-    MatchVariable(name="flo.nor.air.senRelHum1.phi", newName="flo.nor.air.senRelHum.phi"),
-    MatchVariable(name="flo.eas.air.senRelHum1.phi", newName="flo.eas.air.senRelHum.phi"),
-    MatchVariable(name="flo.cor.air.senRelHum1.phi", newName="flo.cor.air.senRelHum.phi"),
-    MatchVariable(name="flo.wes.air.vol.C[1]", newName="flo.wes.air.vol.C[1]"),
-    MatchVariable(name="flo.sou.air.vol.C[1]", newName="flo.sou.air.vol.C[1]"),
-    MatchVariable(name="flo.nor.air.vol.C[1]", newName="flo.nor.air.vol.C[1]"),
-    MatchVariable(name="flo.eas.air.vol.C[1]", newName="flo.eas.air.vol.C[1]"),
-    MatchVariable(name="flo.cor.air.vol.C[1]", newName="flo.cor.air.vol.C[1]"),
-    MatchVariable(name="flo.wes.air.vol.C[2]", newName="flo.wes.air.vol.C[2]"),
-    MatchVariable(name="flo.sou.air.vol.C[2]", newName="flo.sou.air.vol.C[2]"),
-    MatchVariable(name="flo.nor.air.vol.C[2]", newName="flo.nor.air.vol.C[2]"),
-    MatchVariable(name="flo.eas.air.vol.C[2]", newName="flo.eas.air.vol.C[2]"),
-    MatchVariable(name="flo.cor.air.traceSubstance.C", newName="flo.cor.air.traceSubstance.C"),
-    MatchVariable(name="flo.wes.air.traceSubstance.C", newName="flo.wes.air.traceSubstance.C"),
-    MatchVariable(name="flo.sou.air.traceSubstance.C", newName="flo.sou.air.traceSubstance.C"),
-    MatchVariable(name="flo.nor.air.traceSubstance.C", newName="flo.nor.air.traceSubstance.C"),
-    MatchVariable(name="flo.eas.air.traceSubstance.C", newName="flo.eas.air.traceSubstance.C"),
-    MatchVariable(name="flo.cor.air.vol.C[2]", newName="flo.cor.air.vol.C[2]"),
-    MatchVariable(name="hvac.cor.terHea.Q1_flow", newName="hvac.cor.terHea.Q1_flow"),
-    MatchVariable(name="hvac.nor.terHea.Q1_flow", newName="hvac.nor.terHea.Q1_flow"),
-    MatchVariable(name="hvac.eas.terHea.Q1_flow", newName="hvac.eas.terHea.Q1_flow"),
-    MatchVariable(name="hvac.wes.terHea.Q1_flow", newName="hvac.wes.terHea.Q1_flow"),
-    MatchVariable(name="hvac.sou.terHea.Q1_flow", newName="hvac.sou.terHea.Q1_flow"),
-    MatchVariable(name="flo.intGaiFra.y[1]", newName="flo.intGaiFra.y[1]"),
-    MatchVariable(name="hvac.dpRetDuc.port_b.C_outflow[2]", newName="hvac.dpRetDuc.port_b.C_outflow[2]"),
-    MatchVariable(name="hvac.dpRetDuc.port_b.C_outflow[1]", newName="hvac.dpRetDuc.port_b.C_outflow[1]"),
-    MatchVariable(name="hvac.senSupFlo.port_b.C_outflow[2]", newName="hvac.senSupFlo.port_b.C_outflow[2]"),
-    MatchVariable(name="hvac.senSupFlo.port_b.C_outflow[1]", newName="hvac.senSupFlo.port_b.C_outflow[1]"),
-    MatchVariable(name="hvac.eco.port_Out.m_flow", newName="hvac.eco.port_Out.m_flow"),
-    MatchVariable(name="hvac.eco.port_Sup.m_flow", newName="hvac.eco.port_Sup.m_flow"),
-    MatchVariable(name="hvac.dpRetDuc.m_flow", newName="hvac.dpRetDuc.m_flow"),
-    MatchVariable(name="flo.eas.ports[1].m_flow", newName="flo.eas.ports[1].m_flow"),
-    MatchVariable(name="flo.wes.ports[1].m_flow", newName="flo.wes.ports[1].m_flow"),
-    MatchVariable(name="flo.cor.ports[1].m_flow", newName="flo.cor.ports[1].m_flow"),
-    MatchVariable(name="flo.nor.ports[1].m_flow", newName="flo.nor.ports[1].m_flow"),
-    MatchVariable(name="flo.sou.ports[1].m_flow", newName="flo.sou.ports[1].m_flow"),
-    MatchVariable(name="hvac.conFanSup.u_m", newName="hvac.conFanSup.u_m"),
-    MatchVariable(name="hvac.conFanSup.y", newName="hvac.conFanSup.y"),
-    MatchVariable(name="hvac.fanSup.port_a.p", newName="hvac.fanSup.port_a.p"),
-    MatchVariable(name="hvac.TRet.T", newName="hvac.TRet.T"),
-    MatchVariable(name="hvac.TSup.T", newName="hvac.TSup.T"),
-    MatchVariable(name="weaBus.TDryBul", newName="weaBus.TDryBul"),
-    MatchVariable(name="hvac.conEco.VOut_flow_min", newName="hvac.conEco.VOut_flow_min"),
-    MatchVariable(name="hvac.pSetDuc.limPID.u_m", newName="hvac.pSetDuc.limPID.u_m"),
-    MatchVariable(name="hvac.dpDisSupFan.p_rel", newName="hvac.dpDisSupFan.p_rel"),
-    MatchVariable(name="hvac.controlBus.occupied", newName="hvac.controlBus.occupied"),
-    MatchVariable(name="flo.sickPerson.y[1]", newName="flo.sickPerson.y[1]"),
-    MatchVariable(name="hvac.fanSup.dp", newName="hvac.fanSup.dp"),
-    MatchVariable(name="hvac.fanSup.VMachine_flow", newName="hvac.fanSup.VMachine_flow"),
-    MatchVariable(name="hvac.fanSup.P", newName="hvac.fanSup.P"),
-    MatchVariable(name="hvac.filt.dp_nominal", newName="hvac.filt.dp_nominal"),
-    MatchVariable(name="flo.sou.air.gUV.yP_GUV", newName="flo.sou.air.gUV.yP_GUV"),
-    MatchVariable(name="flo.sou.air.pAC.yP_PAC", newName="flo.sou.air.pAC.yP_PAC"),
-    MatchVariable(name="flo.cor.air.gUV.yP_GUV", newName="flo.cor.air.gUV.yP_GUV"),
-    MatchVariable(name="flo.cor.air.pAC.yP_PAC", newName="flo.cor.air.pAC.yP_PAC"),
-    MatchVariable(name="flo.nor.air.gUV.yP_GUV", newName="flo.nor.air.gUV.yP_GUV"),
-    MatchVariable(name="flo.nor.air.pAC.yP_PAC", newName="flo.nor.air.pAC.yP_PAC"),
-    MatchVariable(name="flo.eas.air.gUV.yP_GUV", newName="flo.eas.air.gUV.yP_GUV"),
-    MatchVariable(name="flo.eas.air.pAC.yP_PAC", newName="flo.eas.air.pAC.yP_PAC"),
-    MatchVariable(name="flo.wes.air.gUV.yP_GUV", newName="flo.wes.air.gUV.yP_GUV"),
-    MatchVariable(name="flo.wes.air.pAC.yP_PAC", newName="flo.wes.air.pAC.yP_PAC"),
-    MatchVariable(name="flo.intGaiFra.y[1]", newName="flo.intGaiFra.y[1]"),
-    MatchVariable(name="hvac.VAVBox[1].VSup_flow", newName="hvac.VAVBox[1].VSup_flow"),
-    MatchVariable(name="hvac.VAVBox[2].VSup_flow", newName="hvac.VAVBox[2].VSup_flow"),
-    MatchVariable(name="hvac.VAVBox[3].VSup_flow", newName="hvac.VAVBox[3].VSup_flow"),
-    MatchVariable(name="hvac.VAVBox[4].VSup_flow", newName="hvac.VAVBox[4].VSup_flow"),
-    MatchVariable(name="hvac.VAVBox[5].VSup_flow", newName="hvac.VAVBox[5].VSup_flow"),
-    MatchVariable(name="hvac.VOut1.V_flow", newName="hvac.VOut1.V_flow"),
-    MatchVariable(name="hvac.senSupFlo.V_flow", newName="hvac.senSupFlo.V_flow"),
-    MatchVariable(name="hvac.VAVBox[1].terHea.Q2_flow", newName="hvac.VAVBox[1].terHea.Q2_flow"),
-    MatchVariable(name="hvac.VAVBox[2].terHea.Q2_flow", newName="hvac.VAVBox[2].terHea.Q2_flow"),
-    MatchVariable(name="hvac.VAVBox[3].terHea.Q2_flow", newName="hvac.VAVBox[3].terHea.Q2_flow"),
-    MatchVariable(name="hvac.VAVBox[4].terHea.Q2_flow", newName="hvac.VAVBox[4].terHea.Q2_flow"),
-    MatchVariable(name="hvac.VAVBox[5].terHea.Q2_flow", newName="hvac.VAVBox[5].terHea.Q2_flow"),
-    MatchVariable(name="hvac.inDucGUV.yP_GUV", newName="hvac.inDucGUV.yP_GUV"),
-    MatchVariable(name="flo.sou.flowPAC", newName="flo.sou.flowPAC"),
-    MatchVariable(name="flo.cor.flowPAC", newName="flo.cor.flowPAC"),
-    MatchVariable(name="flo.nor.flowPAC", newName="flo.nor.flowPAC"),
-    MatchVariable(name="flo.eas.flowPAC", newName="flo.eas.flowPAC"),
-    MatchVariable(name="flo.wes.flowPAC", newName="flo.wes.flowPAC"),
-    MatchVariable(name="hvac.inDucGUV.filt.eff1", newName="hvac.inDucGUV.filt.eff1"),
-    MatchVariable(name="hvac.heaCoi.Q1_flow", newName="hvac.heaCoi.Q1_flow"),
-    MatchVariable(name="hvac.cooCoi.Q1_flow", newName="hvac.cooCoi.Q1_flow")})},
-                Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-          coordinateSystem(preserveAspectRatio=false)));
-  end OutputVariableSelection;
 
   model InDuctGUV "In Duct GUV"
     extends Buildings.Fluid.BaseClasses.PartialInDuctGUV(
@@ -514,49 +422,6 @@ First implementation.
       experiment(StopTime=7200, __Dymola_Algorithm="Dassl"));
   end InDuctGUV;
 
-  model inDucGUVExample
-    replaceable package MediumA = Buildings.Media.Air(extraPropertiesNames={"CO2", "COVID"}) "Medium model for air";
-    parameter Modelica.Units.SI.MassFlowRate mAir_flow_nominal = 6.71
-      "Design mass flow rate";
-    Buildings.Fluid.FixedResistances.InDuctGUV
-                                     inDucGUV(
-      dp_nominal=0,
-      eff=1,
-      kpow=200,
-      m_flow_nominal=mAir_flow_nominal,
-      redeclare package Medium = MediumA)
-      annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
-    Buildings.Fluid.Sources.MassFlowSource_T boundary(
-      use_C_in=false,
-      C={0,1},
-      use_m_flow_in=true,
-      redeclare package Medium = MediumA,
-      nPorts=1) annotation (Placement(transformation(extent={{-58,-12},{-38,8}})));
-    Buildings.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium
-        =                                                                        MediumA)
-      annotation (Placement(transformation(extent={{72,-10},{52,10}})));
-    Modelica.Blocks.Sources.Ramp ramp(
-      height=0.75*mAir_flow_nominal,
-      duration=3600,
-      offset=0.25*mAir_flow_nominal,
-      startTime=120)
-      annotation (Placement(transformation(extent={{-88,26},{-68,46}})));
-    Modelica.Blocks.Sources.BooleanConstant booleanConstant
-      annotation (Placement(transformation(extent={{-66,-46},{-46,-26}})));
-  equation
-    connect(boundary.ports[1], inDucGUV.port_a)
-      annotation (Line(points={{-38,-2},{-10,-2}}, color={0,127,255}));
-    connect(inDucGUV.port_b, bou.ports[1]) annotation (Line(points={{10,-2},{46,-2},
-            {46,0},{52,0}}, color={0,127,255}));
-    connect(booleanConstant.y, inDucGUV.u) annotation (Line(points={{-45,-36},{-20,
-            -36},{-20,-10},{-12,-10}}, color={255,0,255}));
-    connect(ramp.y, boundary.m_flow_in) annotation (Line(points={{-67,36},{-62,36},
-            {-62,12},{-66,12},{-66,6},{-60,6}}, color={0,0,127}));
-    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=false)),
-      Diagram(coordinateSystem(preserveAspectRatio=false)));
-  end inDucGUVExample;
-
   model GUV "In-room GUV"
 
     parameter Real frad(min=0, max=1) = 0.2
@@ -638,100 +503,240 @@ First implementation.
           Line(points={{-36,8},{42,8}},   color={28,108,200}),
           Line(points={{-36,-32},{42,-32}}, color={28,108,200}),
           Line(points={{-36,-52},{42,-52}}, color={28,108,200}),
-          Line(points={{-36,-12},{42,-12}}, color={28,108,200})}));
+          Line(points={{-36,-12},{42,-12}}, color={28,108,200})}),
+        Documentation(info="<html>
+
+<p>This model is designed to simulate the inactivation of airborne pathogens by either upper-or whole-room Germicidal Ultraviolet light devices(GUV) when the GUV is enabled <code>uGUVEna</code>. The GUV model calculates the mass flow rate of the active pathogens in the outflow from the GUV(<span style=\"font-family: Courier New;\">yC_flow</span>) based on the equation described below. The GUV device consumes energy based on a constant power rating,<code>kpow</code>, which is ultimately dissipated into the zone as heat(<code>diss</code>).
+(<span style=\"font-family: Courier New;\">Kpow</span>) is used to calculate the power output(<span style=\"font-family: Courier New;\">yP_PAC</span>), and total energy output (<span style=\"font-family: Courier New;\">yE_PAC</span>). </p>
+</p>
+
+<h4> Main Equations </h4>
+<p align=\"center\"><span style=\"font-family: Courier New;\">Ċ</span><sub>GUV</sub> = E<sub>avg</sub> <span style=\"font-family: Courier New;\">k</span><sub>rad</sub>f<sub>rad</sub>V<sub>zone</sub>c<sub>zone</sub> </p>
+<p>where <span style=\"font-family: Courier New;\">Ċ</span><sub>PAC</sub> is the inactivation rate of airborne pathogens by the GUV, E<sub>avg</sub> is the average fluence rate of the GUV device, k</span><sub>rad</sub> is susceptibility of the pathogens to the GUV irrdiation,f<sub>rad</sub> is the fraction of irradiated volume in the zone, V<sub>zone</sub> is the total volume of the zone, and c<sub>zone</sub> is the pathogen concentration in the zone where the PAC is located.</p>
+
+<h4> Assumptions </h4>
+
+This assumes that the zone is well mixed and the parameters E<sub>avg</sub>,k<sub>rad</sub>, and f<sub>rad</sub> are constant for the given simulation when the GUV device is on.
+
+</html>
+"));
   end GUV;
 
-  partial model PartialInDuctGUV "Partial model for an in duct GUV"
-      extends Buildings.Fluid.Interfaces.PartialTwoPortInterface(
-       show_T=false,
-       dp(nominal=if dp_nominal_pos > Modelica.Constants.eps
-            then dp_nominal_pos else 1),
-       m_flow(
-          nominal=if m_flow_nominal_pos > Modelica.Constants.eps
-            then m_flow_nominal_pos else 1),
-       final m_flow_small = 1E-4*abs(m_flow_nominal));
+  package BaseClasses
+    model OutputVariableSelection
+      "This model set the variables that will be output in .mat file"
+      annotation (__Dymola_selections={Selection(name="SelectedVariable",match={
+      MatchVariable(name="flo.wes.air.vol.T", newName="flo.wes.air.vol.T"),
+      MatchVariable(name="flo.sou.air.vol.T", newName="flo.sou.air.vol.T"),
+      MatchVariable(name="flo.nor.air.vol.T", newName="flo.nor.air.vol.T"),
+      MatchVariable(name="flo.eas.air.vol.T", newName="flo.eas.air.vol.T"),
+      MatchVariable(name="flo.cor.air.vol.T", newName="flo.cor.air.vol.T"),
+      MatchVariable(name="flo.wes.air.senRelHum1.phi", newName="flo.wes.air.senRelHum.phi"),
+      MatchVariable(name="flo.sou.air.senRelHum1.phi", newName="flo.sou.air.senRelHum.phi"),
+      MatchVariable(name="flo.nor.air.senRelHum1.phi", newName="flo.nor.air.senRelHum.phi"),
+      MatchVariable(name="flo.eas.air.senRelHum1.phi", newName="flo.eas.air.senRelHum.phi"),
+      MatchVariable(name="flo.cor.air.senRelHum1.phi", newName="flo.cor.air.senRelHum.phi"),
+      MatchVariable(name="flo.wes.air.vol.C[1]", newName="flo.wes.air.vol.C[1]"),
+      MatchVariable(name="flo.sou.air.vol.C[1]", newName="flo.sou.air.vol.C[1]"),
+      MatchVariable(name="flo.nor.air.vol.C[1]", newName="flo.nor.air.vol.C[1]"),
+      MatchVariable(name="flo.eas.air.vol.C[1]", newName="flo.eas.air.vol.C[1]"),
+      MatchVariable(name="flo.cor.air.vol.C[1]", newName="flo.cor.air.vol.C[1]"),
+      MatchVariable(name="flo.wes.air.vol.C[2]", newName="flo.wes.air.vol.C[2]"),
+      MatchVariable(name="flo.sou.air.vol.C[2]", newName="flo.sou.air.vol.C[2]"),
+      MatchVariable(name="flo.nor.air.vol.C[2]", newName="flo.nor.air.vol.C[2]"),
+      MatchVariable(name="flo.eas.air.vol.C[2]", newName="flo.eas.air.vol.C[2]"),
+      MatchVariable(name="flo.cor.air.traceSubstance.C", newName="flo.cor.air.traceSubstance.C"),
+      MatchVariable(name="flo.wes.air.traceSubstance.C", newName="flo.wes.air.traceSubstance.C"),
+      MatchVariable(name="flo.sou.air.traceSubstance.C", newName="flo.sou.air.traceSubstance.C"),
+      MatchVariable(name="flo.nor.air.traceSubstance.C", newName="flo.nor.air.traceSubstance.C"),
+      MatchVariable(name="flo.eas.air.traceSubstance.C", newName="flo.eas.air.traceSubstance.C"),
+      MatchVariable(name="flo.cor.air.vol.C[2]", newName="flo.cor.air.vol.C[2]"),
+      MatchVariable(name="hvac.cor.terHea.Q1_flow", newName="hvac.cor.terHea.Q1_flow"),
+      MatchVariable(name="hvac.nor.terHea.Q1_flow", newName="hvac.nor.terHea.Q1_flow"),
+      MatchVariable(name="hvac.eas.terHea.Q1_flow", newName="hvac.eas.terHea.Q1_flow"),
+      MatchVariable(name="hvac.wes.terHea.Q1_flow", newName="hvac.wes.terHea.Q1_flow"),
+      MatchVariable(name="hvac.sou.terHea.Q1_flow", newName="hvac.sou.terHea.Q1_flow"),
+      MatchVariable(name="flo.intGaiFra.y[1]", newName="flo.intGaiFra.y[1]"),
+      MatchVariable(name="hvac.dpRetDuc.port_b.C_outflow[2]", newName="hvac.dpRetDuc.port_b.C_outflow[2]"),
+      MatchVariable(name="hvac.dpRetDuc.port_b.C_outflow[1]", newName="hvac.dpRetDuc.port_b.C_outflow[1]"),
+      MatchVariable(name="hvac.senSupFlo.port_b.C_outflow[2]", newName="hvac.senSupFlo.port_b.C_outflow[2]"),
+      MatchVariable(name="hvac.senSupFlo.port_b.C_outflow[1]", newName="hvac.senSupFlo.port_b.C_outflow[1]"),
+      MatchVariable(name="hvac.eco.port_Out.m_flow", newName="hvac.eco.port_Out.m_flow"),
+      MatchVariable(name="hvac.eco.port_Sup.m_flow", newName="hvac.eco.port_Sup.m_flow"),
+      MatchVariable(name="hvac.dpRetDuc.m_flow", newName="hvac.dpRetDuc.m_flow"),
+      MatchVariable(name="flo.eas.ports[1].m_flow", newName="flo.eas.ports[1].m_flow"),
+      MatchVariable(name="flo.wes.ports[1].m_flow", newName="flo.wes.ports[1].m_flow"),
+      MatchVariable(name="flo.cor.ports[1].m_flow", newName="flo.cor.ports[1].m_flow"),
+      MatchVariable(name="flo.nor.ports[1].m_flow", newName="flo.nor.ports[1].m_flow"),
+      MatchVariable(name="flo.sou.ports[1].m_flow", newName="flo.sou.ports[1].m_flow"),
+      MatchVariable(name="hvac.conFanSup.u_m", newName="hvac.conFanSup.u_m"),
+      MatchVariable(name="hvac.conFanSup.y", newName="hvac.conFanSup.y"),
+      MatchVariable(name="hvac.fanSup.port_a.p", newName="hvac.fanSup.port_a.p"),
+      MatchVariable(name="hvac.TRet.T", newName="hvac.TRet.T"),
+      MatchVariable(name="hvac.TSup.T", newName="hvac.TSup.T"),
+      MatchVariable(name="weaBus.TDryBul", newName="weaBus.TDryBul"),
+      MatchVariable(name="hvac.conEco.VOut_flow_min", newName="hvac.conEco.VOut_flow_min"),
+      MatchVariable(name="hvac.pSetDuc.limPID.u_m", newName="hvac.pSetDuc.limPID.u_m"),
+      MatchVariable(name="hvac.dpDisSupFan.p_rel", newName="hvac.dpDisSupFan.p_rel"),
+      MatchVariable(name="hvac.controlBus.occupied", newName="hvac.controlBus.occupied"),
+      MatchVariable(name="flo.sickPerson.y[1]", newName="flo.sickPerson.y[1]"),
+      MatchVariable(name="hvac.fanSup.dp", newName="hvac.fanSup.dp"),
+      MatchVariable(name="hvac.fanSup.VMachine_flow", newName="hvac.fanSup.VMachine_flow"),
+      MatchVariable(name="hvac.fanSup.P", newName="hvac.fanSup.P"),
+      MatchVariable(name="hvac.filt.dp_nominal", newName="hvac.filt.dp_nominal"),
+      MatchVariable(name="flo.sou.air.gUV.yP_GUV", newName="flo.sou.air.gUV.yP_GUV"),
+      MatchVariable(name="flo.sou.air.pAC.yP_PAC", newName="flo.sou.air.pAC.yP_PAC"),
+      MatchVariable(name="flo.cor.air.gUV.yP_GUV", newName="flo.cor.air.gUV.yP_GUV"),
+      MatchVariable(name="flo.cor.air.pAC.yP_PAC", newName="flo.cor.air.pAC.yP_PAC"),
+      MatchVariable(name="flo.nor.air.gUV.yP_GUV", newName="flo.nor.air.gUV.yP_GUV"),
+      MatchVariable(name="flo.nor.air.pAC.yP_PAC", newName="flo.nor.air.pAC.yP_PAC"),
+      MatchVariable(name="flo.eas.air.gUV.yP_GUV", newName="flo.eas.air.gUV.yP_GUV"),
+      MatchVariable(name="flo.eas.air.pAC.yP_PAC", newName="flo.eas.air.pAC.yP_PAC"),
+      MatchVariable(name="flo.wes.air.gUV.yP_GUV", newName="flo.wes.air.gUV.yP_GUV"),
+      MatchVariable(name="flo.wes.air.pAC.yP_PAC", newName="flo.wes.air.pAC.yP_PAC"),
+      MatchVariable(name="flo.intGaiFra.y[1]", newName="flo.intGaiFra.y[1]"),
+      MatchVariable(name="hvac.VAVBox[1].VSup_flow", newName="hvac.VAVBox[1].VSup_flow"),
+      MatchVariable(name="hvac.VAVBox[2].VSup_flow", newName="hvac.VAVBox[2].VSup_flow"),
+      MatchVariable(name="hvac.VAVBox[3].VSup_flow", newName="hvac.VAVBox[3].VSup_flow"),
+      MatchVariable(name="hvac.VAVBox[4].VSup_flow", newName="hvac.VAVBox[4].VSup_flow"),
+      MatchVariable(name="hvac.VAVBox[5].VSup_flow", newName="hvac.VAVBox[5].VSup_flow"),
+      MatchVariable(name="hvac.VOut1.V_flow", newName="hvac.VOut1.V_flow"),
+      MatchVariable(name="hvac.senSupFlo.V_flow", newName="hvac.senSupFlo.V_flow"),
+      MatchVariable(name="hvac.VAVBox[1].terHea.Q2_flow", newName="hvac.VAVBox[1].terHea.Q2_flow"),
+      MatchVariable(name="hvac.VAVBox[2].terHea.Q2_flow", newName="hvac.VAVBox[2].terHea.Q2_flow"),
+      MatchVariable(name="hvac.VAVBox[3].terHea.Q2_flow", newName="hvac.VAVBox[3].terHea.Q2_flow"),
+      MatchVariable(name="hvac.VAVBox[4].terHea.Q2_flow", newName="hvac.VAVBox[4].terHea.Q2_flow"),
+      MatchVariable(name="hvac.VAVBox[5].terHea.Q2_flow", newName="hvac.VAVBox[5].terHea.Q2_flow"),
+      MatchVariable(name="hvac.inDucGUV.yP_GUV", newName="hvac.inDucGUV.yP_GUV"),
+      MatchVariable(name="flo.sou.flowPAC", newName="flo.sou.flowPAC"),
+      MatchVariable(name="flo.cor.flowPAC", newName="flo.cor.flowPAC"),
+      MatchVariable(name="flo.nor.flowPAC", newName="flo.nor.flowPAC"),
+      MatchVariable(name="flo.eas.flowPAC", newName="flo.eas.flowPAC"),
+      MatchVariable(name="flo.wes.flowPAC", newName="flo.wes.flowPAC"),
+      MatchVariable(name="hvac.inDucGUV.filt.eff1", newName="hvac.inDucGUV.filt.eff1"),
+      MatchVariable(name="hvac.heaCoi.Q1_flow", newName="hvac.heaCoi.Q1_flow"),
+      MatchVariable(name="hvac.cooCoi.Q1_flow", newName="hvac.cooCoi.Q1_flow")})},
+                  Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end OutputVariableSelection;
 
-    constant Boolean homotopyInitialization = true "= true, use homotopy method"
-      annotation(HideResult=true);
+    model ViralDecay
 
-    parameter Boolean from_dp = false
-      "= true, use m_flow = f(dp) else dp = f(m_flow)"
-      annotation (Evaluate=true, Dialog(tab="Advanced"));
+      parameter Real kdec(min=0) = 0.48
+        "Decay rate of virus";
 
-    parameter Modelica.Units.SI.PressureDifference dp_nominal(displayUnit="Pa")
-      "Pressure drop at nominal mass flow rate"
-      annotation (Dialog(group="Nominal condition"));
+      parameter Real V(min=0) = 100
+        "Room volume";
+      Modelica.Blocks.Math.Gain gain(k=-kdec*1.2*V/3600)
+        annotation (Placement(transformation(extent={{-6,-10},{14,10}})));
+      Modelica.Blocks.Interfaces.RealInput u
+        annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+      Modelica.Blocks.Interfaces.RealOutput y
+        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+    equation
+      connect(u, gain.u)
+        annotation (Line(points={{-120,0},{-8,0}}, color={0,0,127}));
+      connect(gain.y, y)
+        annotation (Line(points={{15,0},{110,0}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false)),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+<p>This block calculates the concentration of a virus after viral decay using the decay rate of the virus(<span style=\"font-family: Courier New;\">kdec</span>) and the volume of the room(<span style=\"font-family: Courier New;\">V</span>) using the following equation:</p>
+</html>"));
+    end ViralDecay;
 
-    parameter Boolean linearized = false
-      "= true, use linear relation between m_flow and dp for any flow rate"
-      annotation(Evaluate=true, Dialog(tab="Advanced"));
+    partial model PartialInDuctGUV "Partial model for an in duct GUV"
+        extends Buildings.Fluid.Interfaces.PartialTwoPortInterface(
+         show_T=false,
+         dp(nominal=if dp_nominal_pos > Modelica.Constants.eps
+              then dp_nominal_pos else 1),
+         m_flow(
+            nominal=if m_flow_nominal_pos > Modelica.Constants.eps
+              then m_flow_nominal_pos else 1),
+         final m_flow_small = 1E-4*abs(m_flow_nominal));
 
-    parameter Modelica.Units.SI.MassFlowRate m_flow_turbulent(min=0)
-      "Turbulent flow if |m_flow| >= m_flow_turbulent";
+      constant Boolean homotopyInitialization = true "= true, use homotopy method"
+        annotation(HideResult=true);
 
-    parameter Real eff(min=0, max=1) = 0.85
-      "Efficiency of HVAC filter";
+      parameter Boolean from_dp = false
+        "= true, use m_flow = f(dp) else dp = f(m_flow)"
+        annotation (Evaluate=true, Dialog(tab="Advanced"));
 
-  protected
-    parameter Medium.ThermodynamicState sta_default=
-       Medium.setState_pTX(T=Medium.T_default, p=Medium.p_default, X=Medium.X_default);
-    parameter Modelica.Units.SI.DynamicViscosity eta_default=
-        Medium.dynamicViscosity(sta_default)
-      "Dynamic viscosity, used to compute transition to turbulent flow regime";
+      parameter Modelica.Units.SI.PressureDifference dp_nominal(displayUnit="Pa")
+        "Pressure drop at nominal mass flow rate"
+        annotation (Dialog(group="Nominal condition"));
 
-    final parameter Modelica.Units.SI.MassFlowRate m_flow_nominal_pos=abs(
-        m_flow_nominal) "Absolute value of nominal flow rate";
-    final parameter Modelica.Units.SI.PressureDifference dp_nominal_pos(
-        displayUnit="Pa") = abs(dp_nominal)
-      "Absolute value of nominal pressure difference";
-    Delays.DelayFirstOrder                 vol(
-      redeclare final package Medium = Medium,
-      use_C_flow=false,
-      final tau=1,
-      final energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-      final m_flow_nominal=m_flow_nominal,
-      final m_flow_small=m_flow_small,
-      final prescribedHeatFlowRate=true,
-      final allowFlowReversal=allowFlowReversal,
-      nPorts=2) "Fluid volume for dynamic model"
-      annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  initial equation
-    assert(homotopyInitialization, "In " + getInstanceName() +
-      ": The constant homotopyInitialization has been modified from its default value. This constant will be removed in future releases.",
-      level = AssertionLevel.warning);
+      parameter Boolean linearized = false
+        "= true, use linear relation between m_flow and dp for any flow rate"
+        annotation(Evaluate=true, Dialog(tab="Advanced"));
 
-  equation
-    // Isenthalpic state transformation (no storage and no loss of energy)
-    //port_a.h_outflow = if allowFlowReversal then inStream(port_b.h_outflow) else Medium.h_default;
-    //port_b.h_outflow = inStream(port_a.h_outflow);
+      parameter Modelica.Units.SI.MassFlowRate m_flow_turbulent(min=0)
+        "Turbulent flow if |m_flow| >= m_flow_turbulent";
 
-    // Mass balance (no storage)
-    //port_a.m_flow + port_b.m_flow = 0;
+      parameter Real eff(min=0, max=1) = 0.85
+        "Efficiency of HVAC filter";
 
-    // Transport of substances
-    //port_a.Xi_outflow = if allowFlowReversal then inStream(port_b.Xi_outflow) else Medium.X_default[1:Medium.nXi];
-    //port_b.Xi_outflow = inStream(port_a.Xi_outflow);
+    protected
+      parameter Medium.ThermodynamicState sta_default=
+         Medium.setState_pTX(T=Medium.T_default, p=Medium.p_default, X=Medium.X_default);
+      parameter Modelica.Units.SI.DynamicViscosity eta_default=
+          Medium.dynamicViscosity(sta_default)
+        "Dynamic viscosity, used to compute transition to turbulent flow regime";
 
-    //port_a.C_outflow = if allowFlowReversal then inStream(port_b.C_outflow) else zeros(Medium.nC);
-    //port_b.C_outflow[2] = (1-eff)*inStream(vol.ports[2].C_outflow[2]);
-    //port_b.C_outflow[1] = inStream(vol.ports[2].C_outflow[1]);
+      final parameter Modelica.Units.SI.MassFlowRate m_flow_nominal_pos=abs(
+          m_flow_nominal) "Absolute value of nominal flow rate";
+      final parameter Modelica.Units.SI.PressureDifference dp_nominal_pos(
+          displayUnit="Pa") = abs(dp_nominal)
+        "Absolute value of nominal pressure difference";
+      Delays.DelayFirstOrder                 vol(
+        redeclare final package Medium = Medium,
+        use_C_flow=false,
+        final tau=1,
+        final energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+        final m_flow_nominal=m_flow_nominal,
+        final m_flow_small=m_flow_small,
+        final prescribedHeatFlowRate=true,
+        final allowFlowReversal=allowFlowReversal,
+        nPorts=2) "Fluid volume for dynamic model"
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+    initial equation
+      assert(homotopyInitialization, "In " + getInstanceName() +
+        ": The constant homotopyInitialization has been modified from its default value. This constant will be removed in future releases.",
+        level = AssertionLevel.warning);
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -100},{100,100}}), graphics={
-          Rectangle(
-            extent=DynamicSelect({{-100,10},{-100,10}}, {{100,10},{100+200*max(-1, min(0, m_flow/(abs(m_flow_nominal)))),-10}}),
-            lineColor={28,108,200},
-            fillColor={255,0,0},
-            fillPattern=FillPattern.Solid,
-            pattern=LinePattern.None),
-          Rectangle(
-            extent=DynamicSelect({{-100,10},{-100,10}}, {{-100,10},{-100+200*min(1, max(0, m_flow/abs(m_flow_nominal))),-10}}),
-            lineColor={28,108,200},
-            fillColor={0,0,0},
-            fillPattern=FillPattern.Solid,
-            pattern=LinePattern.None)}),
-            defaultComponentName="res",
-  Documentation(info="<html>
+    equation
+      // Isenthalpic state transformation (no storage and no loss of energy)
+      //port_a.h_outflow = if allowFlowReversal then inStream(port_b.h_outflow) else Medium.h_default;
+      //port_b.h_outflow = inStream(port_a.h_outflow);
+
+      // Mass balance (no storage)
+      //port_a.m_flow + port_b.m_flow = 0;
+
+      // Transport of substances
+      //port_a.Xi_outflow = if allowFlowReversal then inStream(port_b.Xi_outflow) else Medium.X_default[1:Medium.nXi];
+      //port_b.Xi_outflow = inStream(port_a.Xi_outflow);
+
+      //port_a.C_outflow = if allowFlowReversal then inStream(port_b.C_outflow) else zeros(Medium.nC);
+      //port_b.C_outflow[2] = (1-eff)*inStream(vol.ports[2].C_outflow[2]);
+      //port_b.C_outflow[1] = inStream(vol.ports[2].C_outflow[1]);
+
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                -100},{100,100}}), graphics={
+            Rectangle(
+              extent=DynamicSelect({{-100,10},{-100,10}}, {{100,10},{100+200*max(-1, min(0, m_flow/(abs(m_flow_nominal)))),-10}}),
+              lineColor={28,108,200},
+              fillColor={255,0,0},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None),
+            Rectangle(
+              extent=DynamicSelect({{-100,10},{-100,10}}, {{-100,10},{-100+200*min(1, max(0, m_flow/abs(m_flow_nominal))),-10}}),
+              lineColor={28,108,200},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None)}),
+              defaultComponentName="res",
+    Documentation(info="<html>
 <p>
 Partial model for a flow resistance, possible with variable flow coefficient.
 Models that extend this class need to implement an equation that relates
@@ -744,7 +749,7 @@ See for example
 Buildings.Fluid.FixedResistances.PressureDrop</a> for a model that extends
 this base class.
 </p>
-</html>",   revisions="<html>
+</html>",     revisions="<html>
 <ul>
 <li>
 April 14, 2020, by Michael Wetter:<br/>
@@ -877,112 +882,133 @@ First implementation.
 </li>
 </ul>
 </html>"));
-  end PartialInDuctGUV;
+    end PartialInDuctGUV;
+  end BaseClasses;
 
-  model PACExample
-    import Buildings.AirCleaning;
-    replaceable package Medium = Buildings.Media.Air(extraPropertiesNames={"CO2", "COVID"}) "Medium model for air";
-    parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 6.71
-      "Design mass flow rate";
-    Buildings.Fluid.MixingVolumes.MixingVolumeMoistAir
-                                             vol(
-      redeclare package Medium = Medium,
-      final energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-      final massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-      final V=500,
-      final C_start={0,1},
-      final mSenFac=1,
-      final m_flow_nominal=m_flow_nominal,
-      final prescribedHeatFlowRate=true,
-      final nPorts=2,
-      m_flow_small=1E-4*abs(m_flow_nominal),
-      allowFlowReversal=true,
-      final use_C_flow=true)        "Room air volume"
-      annotation (Placement(transformation(extent={{8,-8},{28,12}})));
-    Modelica.Blocks.Sources.Constant conZero(k=0)
-      annotation (Placement(transformation(extent={{-60,22},{-40,42}})));
-    AirCleaning.PAC pAC(
-      redeclare package Medium = Medium,
-      eff={0,0.9997},
-      nPACs=2,
-      flowPAC=400*1.2/3600,
-      kpow=100)
-      annotation (Placement(transformation(extent={{-36,-62},{-16,-42}})));
-    Modelica.Blocks.Sources.RealExpression patConc(y=vol.C[2])
-      "virus concentration"
-      annotation (Placement(transformation(extent={{-90,-40},{-70,-20}})));
-    Buildings.Fluid.Sources.MassFlowSource_T sup(
-      use_C_in=false,
-      C={0,1},
-      use_m_flow_in=false,
-      redeclare package Medium = Medium,
-      m_flow=0*500*1.2/3600,
-      nPorts=1)
-      annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
-    Buildings.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package Medium
-        = Medium)
-      annotation (Placement(transformation(extent={{58,-38},{38,-18}})));
-    Modelica.Blocks.Sources.BooleanConstant ConPACEna "True when PAC is on"
-      annotation (Placement(transformation(extent={{-90,-72},{-70,-52}})));
-    AirCleaning.ViralDecay viralDecay
-      annotation (Placement(transformation(extent={{-36,-90},{-16,-70}})));
-    Modelica.Blocks.Sources.RealExpression patConc1(y=vol.C[1])
-      "CO2 concentration"
-      annotation (Placement(transformation(extent={{-62,-30},{-42,-10}})));
-  equation
-    connect(conZero.y, vol.mWat_flow) annotation (Line(points={{-39,32},{-22,32},
-            {-22,10},{6,10}}, color={0,0,127}));
-    connect(pAC.diss, vol.heatPort) annotation (Line(points={{-15.6,-60},{-6,-60},
-            {-6,2},{8,2}},
-                  color={191,0,0}));
-    connect(sup.ports[1], vol.ports[1]) annotation (Line(points={{-48,0},{-4,0},{
-            -4,-12},{16,-12},{16,-8}}, color={0,127,255}));
-    connect(vol.ports[2], bou.ports[1])
-      annotation (Line(points={{20,-8},{20,-28},{38,-28}},  color={0,127,255}));
-    connect(ConPACEna.y, pAC.uPACEna) annotation (Line(points={{-69,-62},{-46,-62},
-            {-46,-54},{-38,-54}}, color={255,0,255}));
-    connect(patConc.y, viralDecay.u) annotation (Line(points={{-69,-30},{-44,-30},
-            {-44,-80},{-38,-80}}, color={0,0,127}));
-    connect(pAC.yC_flow[1], vol.C_flow[1]) annotation (Line(points={{-15,-48},{0,
-            -48},{0,-10},{2,-10},{2,-4},{6,-4}}, color={0,0,127}));
-    connect(pAC.yC_flow[2], vol.C_flow[2]) annotation (Line(points={{-15,-48},{0,
-            -48},{0,-10},{2,-10},{2,-4},{6,-4}}, color={0,0,127}));
-    connect(patConc1.y, pAC.C[1]) annotation (Line(points={{-41,-20},{-38,-20},{
-            -38,-38},{-46,-38},{-46,-48},{-38,-48}}, color={0,0,127}));
-    connect(patConc.y, pAC.C[2]) annotation (Line(points={{-69,-30},{-44,-30},{
-            -44,-48},{-38,-48}}, color={0,0,127}));
-    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=false)),
-      Diagram(coordinateSystem(preserveAspectRatio=false)),
-      Documentation(info="<html>
-<p>This example simulates <a href=\"AirCleaning.PAC\">AirCleaning.PAC</a> for the PAC outflow concentration of a virus and CO<sub>2. </sub></p>
+  package Examples
+    model inDucGUVExample
+      replaceable package MediumA = Buildings.Media.Air(extraPropertiesNames={"CO2", "COVID"}) "Medium model for air";
+      parameter Modelica.Units.SI.MassFlowRate mAir_flow_nominal = 6.71
+        "Design mass flow rate";
+      Buildings.Fluid.FixedResistances.InDuctGUV
+                                       inDucGUV(
+        dp_nominal=0,
+        eff=1,
+        kpow=200,
+        m_flow_nominal=mAir_flow_nominal,
+        redeclare package Medium = MediumA)
+        annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
+      Buildings.Fluid.Sources.MassFlowSource_T boundary(
+        use_C_in=false,
+        C={0,1},
+        use_m_flow_in=true,
+        redeclare package Medium = MediumA,
+        nPorts=1) annotation (Placement(transformation(extent={{-58,-12},{-38,8}})));
+      Buildings.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package
+          Medium =                                                                 MediumA)
+        annotation (Placement(transformation(extent={{72,-10},{52,10}})));
+      Modelica.Blocks.Sources.Ramp ramp(
+        height=0.75*mAir_flow_nominal,
+        duration=3600,
+        offset=0.25*mAir_flow_nominal,
+        startTime=120)
+        annotation (Placement(transformation(extent={{-88,26},{-68,46}})));
+      Modelica.Blocks.Sources.BooleanConstant booleanConstant
+        annotation (Placement(transformation(extent={{-66,-46},{-46,-26}})));
+    equation
+      connect(boundary.ports[1], inDucGUV.port_a)
+        annotation (Line(points={{-38,-2},{-10,-2}}, color={0,127,255}));
+      connect(inDucGUV.port_b, bou.ports[1]) annotation (Line(points={{10,-2},{46,-2},
+              {46,0},{52,0}}, color={0,127,255}));
+      connect(booleanConstant.y, inDucGUV.u) annotation (Line(points={{-45,-36},{-20,
+              -36},{-20,-10},{-12,-10}}, color={255,0,255}));
+      connect(ramp.y, boundary.m_flow_in) annotation (Line(points={{-67,36},{-62,36},
+              {-62,12},{-66,12},{-66,6},{-60,6}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false)),
+        Diagram(coordinateSystem(preserveAspectRatio=false)));
+    end inDucGUVExample;
+
+    model PACExample
+      import Buildings.AirCleaning;
+      replaceable package Medium = Buildings.Media.Air(extraPropertiesNames={"CO2", "COVID"}) "Medium model for air";
+      parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 6.71
+        "Design mass flow rate";
+      Buildings.Fluid.MixingVolumes.MixingVolumeMoistAir
+                                               vol(
+        redeclare package Medium = Medium,
+        final energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+        final massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+        final V=500,
+        final C_start={0,1},
+        final mSenFac=1,
+        final m_flow_nominal=m_flow_nominal,
+        final prescribedHeatFlowRate=true,
+        final nPorts=2,
+        m_flow_small=1E-4*abs(m_flow_nominal),
+        allowFlowReversal=true,
+        final use_C_flow=true)        "Room air volume"
+        annotation (Placement(transformation(extent={{8,-8},{28,12}})));
+      Modelica.Blocks.Sources.Constant conZero(k=0)
+        annotation (Placement(transformation(extent={{-60,22},{-40,42}})));
+      AirCleaning.PAC pAC(
+        redeclare package Medium = Medium,
+        eff={0,0.9997},
+        nPACs=2,
+        flowPAC=400*1.2/3600,
+        kpow=100)
+        annotation (Placement(transformation(extent={{-36,-62},{-16,-42}})));
+      Modelica.Blocks.Sources.RealExpression patConc(y=vol.C[2])
+        "virus concentration"
+        annotation (Placement(transformation(extent={{-90,-40},{-70,-20}})));
+      Buildings.Fluid.Sources.MassFlowSource_T sup(
+        use_C_in=false,
+        C={0,1},
+        use_m_flow_in=false,
+        redeclare package Medium = Medium,
+        m_flow=0*500*1.2/3600,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
+      Buildings.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package
+          Medium =
+            Medium)
+        annotation (Placement(transformation(extent={{58,-38},{38,-18}})));
+      Modelica.Blocks.Sources.BooleanConstant ConPACEna "True when PAC is on"
+        annotation (Placement(transformation(extent={{-90,-72},{-70,-52}})));
+      AirCleaning.BaseClasses.ViralDecay viralDecay
+        annotation (Placement(transformation(extent={{-36,-90},{-16,-70}})));
+      Modelica.Blocks.Sources.RealExpression patConc1(y=vol.C[1])
+        "CO2 concentration"
+        annotation (Placement(transformation(extent={{-62,-30},{-42,-10}})));
+    equation
+      connect(conZero.y, vol.mWat_flow) annotation (Line(points={{-39,32},{-22,32},
+              {-22,10},{6,10}}, color={0,0,127}));
+      connect(pAC.diss, vol.heatPort) annotation (Line(points={{-15.6,-60},{-6,-60},
+              {-6,2},{8,2}},
+                    color={191,0,0}));
+      connect(sup.ports[1], vol.ports[1]) annotation (Line(points={{-48,0},{-4,0},{
+              -4,-12},{16,-12},{16,-8}}, color={0,127,255}));
+      connect(vol.ports[2], bou.ports[1])
+        annotation (Line(points={{20,-8},{20,-28},{38,-28}},  color={0,127,255}));
+      connect(ConPACEna.y, pAC.uPACEna) annotation (Line(points={{-69,-62},{-46,-62},
+              {-46,-54},{-38,-54}}, color={255,0,255}));
+      connect(patConc.y, viralDecay.u) annotation (Line(points={{-69,-30},{-44,-30},
+              {-44,-80},{-38,-80}}, color={0,0,127}));
+      connect(pAC.yC_flow[1], vol.C_flow[1]) annotation (Line(points={{-15,-48},{0,
+              -48},{0,-10},{2,-10},{2,-4},{6,-4}}, color={0,0,127}));
+      connect(pAC.yC_flow[2], vol.C_flow[2]) annotation (Line(points={{-15,-48},{0,
+              -48},{0,-10},{2,-10},{2,-4},{6,-4}}, color={0,0,127}));
+      connect(patConc1.y, pAC.C[1]) annotation (Line(points={{-41,-20},{-38,-20},{
+              -38,-38},{-46,-38},{-46,-48},{-38,-48}}, color={0,0,127}));
+      connect(patConc.y, pAC.C[2]) annotation (Line(points={{-69,-30},{-44,-30},{
+              -44,-48},{-38,-48}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false)),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+<p>This example simulates <a href=\"modelica://Buildings.AirCleaning.PAC\">AirCleaning.PAC</a> for the PAC outflow concentration of a virus and CO<sub>2. </sub></p>
 </html>"));
-  end PACExample;
-
-  model ViralDecay
-
-    parameter Real kdec(min=0) = 0.48
-      "Decay rate of virus";
-
-    parameter Real V(min=0) = 100
-      "Room volume";
-    Modelica.Blocks.Math.Gain gain(k=-kdec*1.2*V/3600)
-      annotation (Placement(transformation(extent={{-6,-10},{14,10}})));
-    Modelica.Blocks.Interfaces.RealInput u
-      annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-    Modelica.Blocks.Interfaces.RealOutput y
-      annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  equation
-    connect(u, gain.u)
-      annotation (Line(points={{-120,0},{-8,0}}, color={0,0,127}));
-    connect(gain.y, y)
-      annotation (Line(points={{15,0},{110,0}}, color={0,0,127}));
-    annotation (
-      Icon(coordinateSystem(preserveAspectRatio=false)),
-      Diagram(coordinateSystem(preserveAspectRatio=false)),
-      Documentation(info="<html>
-<p>This block calculates the concentration of a virus after viral decay using the decay rate of the virus(<span style=\"font-family: Courier New;\">kdec</span>) and the volume of the room(<span style=\"font-family: Courier New;\">V</span>) using the following equation:</p>
-</html>"));
-  end ViralDecay;
+    end PACExample;
+  end Examples;
   annotation ();
 end AirCleaning;
