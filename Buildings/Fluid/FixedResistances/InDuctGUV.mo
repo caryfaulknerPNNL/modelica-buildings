@@ -13,33 +13,20 @@ model InDuctGUV "In Duct GUV"
   parameter Real kpow(min=0) = 120
     "Rated power";
 
+  parameter Real kGUV[Medium.nC](min=0)
+    "Inactivation constant";
+
   parameter Boolean addPowerToMedium=true
     "Set to false to avoid any power (=heat and flow work) being added to medium (may give simpler equations)";
 
   final parameter Real k = if computeFlowResistance then
         m_flow_nominal_pos / sqrt(dp_nominal_pos) else 0
     "Flow coefficient, k=m_flow/sqrt(dp), with unit=(kg.m)^(1/2)";
-  Modelica.Blocks.Interfaces.BooleanInput u "on/off"
-    annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
-  Modelica.Blocks.Math.BooleanToReal booleanToReal
-    annotation (Placement(transformation(extent={{-60,-90},{-40,-70}})));
-  Modelica.Blocks.Continuous.Integrator E_GUV(use_reset=false)
-    annotation (Placement(transformation(extent={{40,-80},{60,-60}})));
-  Modelica.Blocks.Interfaces.RealOutput yP_GUV "Power output"
-    annotation (Placement(transformation(extent={{100,-50},{120,-30}})));
-  Modelica.Blocks.Interfaces.RealOutput yE_GUV "Energy output"
-    annotation (Placement(transformation(extent={{100,-90},{120,-70}})));
-  HVACFilter                        filt(
-    allowFlowReversal=true,
-    eff=0.87,
-    m_flow_nominal=m_flow_nominal,
-    dp_nominal=0,
+  InDuctGUVCalc guvCal(
     redeclare package Medium = Medium,
-    use_eff=true)
-    annotation (Placement(transformation(extent={{50,-10},{70,10}})));
-  Modelica.Blocks.Sources.RealExpression mFlowRat(y=booleanToReal.y*(1 - exp(-2.18
-        *m_flow_nominal/2/m_flow))) "flow ratio kinda"
-    annotation (Placement(transformation(extent={{-72,22},{-52,42}})));
+    m_flow_nominal=m_flow_nominal,
+    dp_nominal=dp_nominal,
+    kGUV=kGUV) annotation (Placement(transformation(extent={{44,-10},{64,10}})));
 protected
   final parameter Boolean computeFlowResistance=(dp_nominal_pos > Modelica.Constants.eps)
     "Flag to enable/disable computation of flow resistance"
@@ -50,17 +37,12 @@ protected
     else 0
     "Precomputed coefficient to avoid division by parameter";
 protected
-  Modelica.Blocks.Math.Gain pow(final k=kpow)
-                                             "power of GUV"
-    annotation (Placement(transformation(extent={{-20,-60},{0,-40}})));
+  Modelica.Blocks.Math.Gain pGUV(final k=kpow) "power of GUV"
+    annotation (Placement(transformation(extent={{-48,-60},{-28,-40}})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prePow(final alpha=0)
  if addPowerToMedium
     "Prescribed power (=heat and flow work) flow for dynamic model"
-    annotation (Placement(transformation(extent={{-2,-90},{18,-70}})));
-protected
-  Modelica.Blocks.Math.Gain keff(final k=eff)
-                                             "power of GUV"
-    annotation (Placement(transformation(extent={{-18,28},{2,48}})));
+    annotation (Placement(transformation(extent={{-20,-60},{0,-40}})));
 initial equation
  if computeFlowResistance then
    assert(m_flow_turbulent > 0, "m_flow_turbulent must be bigger than zero.");
@@ -112,30 +94,21 @@ equation
     dp = 0;
     end if;  // computeFlowResistance */
 
-  connect(u, booleanToReal.u)
-    annotation (Line(points={{-120,-80},{-62,-80}}, color={255,0,255}));
-  connect(booleanToReal.y, pow.u) annotation (Line(points={{-39,-80},{-28,-80},{
-          -28,-50},{-22,-50}}, color={0,0,127}));
-  connect(pow.y, E_GUV.u) annotation (Line(points={{1,-50},{32,-50},{32,-70},{38,
-          -70}}, color={0,0,127}));
-  connect(pow.y, yP_GUV) annotation (Line(points={{1,-50},{32,-50},{32,-36},{94,
-          -36},{94,-40},{110,-40}}, color={0,0,127}));
-  connect(E_GUV.y, yE_GUV) annotation (Line(points={{61,-70},{94,-70},{94,-80},{
-          110,-80}}, color={0,0,127}));
-  connect(pow.y, prePow.Q_flow) annotation (Line(points={{1,-50},{6,-50},{6,-66},
-          {-10,-66},{-10,-80},{-2,-80}}, color={0,0,127}));
-  connect(port_a, vol.ports[1]) annotation (Line(points={{-100,0},{-16,0},{-16,-14},
-          {-2,-14},{-2,-10}}, color={0,127,255}));
-  connect(prePow.port, vol.heatPort) annotation (Line(points={{18,-80},{22,-80},
-          {22,16},{-14,16},{-14,0},{-10,0}}, color={191,0,0}));
-  connect(vol.ports[2], filt.port_a) annotation (Line(points={{2,-10},{2,-12},{-16,
-          -12},{-16,18},{44,18},{44,0},{50,0}}, color={0,127,255}));
-  connect(filt.port_b, port_b)
-    annotation (Line(points={{70,0},{100,0}}, color={0,127,255}));
-  connect(keff.y, filt.eff1) annotation (Line(points={{3,38},{22,38},{22,16},{
-          42,16},{42,-6},{48,-6}}, color={0,0,127}));
-  connect(mFlowRat.y, keff.u) annotation (Line(points={{-51,32},{-28,32},{-28,
-          38},{-20,38}}, color={0,0,127}));
+  connect(pGUV.y, prePow.Q_flow)
+    annotation (Line(points={{-27,-50},{-20,-50}}, color={0,0,127}));
+  connect(guvCal.port_b, port_b)
+    annotation (Line(points={{64,0},{100,0}}, color={0,127,255}));
+  connect(booleanToReal.y, pGUV.u) annotation (Line(points={{-59,-80},{-54,-80},
+          {-54,-50},{-50,-50}}, color={0,0,127}));
+  connect(u, guvCal.u) annotation (Line(points={{-120,-80},{-90,-80},{-90,-18},
+          {14,-18},{14,-8},{42,-8}}, color={255,0,255}));
+  connect(port_a, vol.ports[1]) annotation (Line(points={{-100,0},{-16,0},{-16,
+          -14},{8,-14},{8,-10}},
+                              color={0,127,255}));
+  connect(prePow.port, vol.heatPort) annotation (Line(points={{0,-50},{0,0}},
+                                 color={191,0,0}));
+  connect(vol.ports[2], guvCal.port_a) annotation (Line(points={{12,-10},{12,
+          -20},{20,-20},{20,0},{44,0}}, color={0,127,255}));
   annotation (defaultComponentName="res",
 Documentation(info="<html>
 <p>
