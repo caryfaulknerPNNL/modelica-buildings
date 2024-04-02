@@ -24,7 +24,7 @@ model PAC "In-room portable air cleaner"
     annotation (Placement(transformation(extent={{94,-90},{114,-70}})));
 
 protected
-  Modelica.Blocks.Math.Gain pow(final k=kpow)       "power of PAC"
+  Modelica.Blocks.Math.Gain powPAC(final k=kpow) "power of PAC"
     annotation (Placement(transformation(extent={{-20,-30},{0,-10}})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prePow(final alpha=0)
     "Prescribed power of the PAC dissipated as heat"
@@ -33,10 +33,10 @@ protected
 equation
   connect(uPACEna, booleanToReal.u)
     annotation (Line(points={{-120,-20},{-82,-20}}, color={255,0,255}));
-  connect(booleanToReal.y, pow.u)
+  connect(booleanToReal.y, powPAC.u)
     annotation (Line(points={{-59,-20},{-22,-20}}, color={0,0,127}));
-  connect(pow.y, prePow.Q_flow) annotation (Line(points={{1,-20},{38,-20}},
-                                     color={0,0,127}));
+  connect(powPAC.y, prePow.Q_flow)
+    annotation (Line(points={{1,-20},{38,-20}}, color={0,0,127}));
   connect(prePow.port, diss) annotation (Line(points={{58,-20},{90,-20},{90,-80},
           {104,-80}}, color={191,0,0}));
 

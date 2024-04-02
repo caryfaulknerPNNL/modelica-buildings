@@ -68,6 +68,6 @@ equation
     Diagram(coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=3600, __Dymola_Algorithm="Dassl"),
     Documentation(info="<html>
-<p>This example simulates <a href=\"modelica://Buildings.AirCleaning.PAC\">AirCleaning.GUV</a> for a scenario with CO<sub>2. </sub>and SARS-CoV-2 as trace species. Airflow with a constant rate and concentration of trace species is supplied to a mixing volume. A GUV device is connected to the mixing volume to simulate removal of trace species from the volume, where the GUV does not inactivate CO<sub>2</sub> but inactivates SARS-CoV-2.</p>
+<p>This example simulates <a href=\"modelica://Buildings.AirCleaning.PAC\">AirCleaning.RoomGUV</a> for a scenario with CO<sub>2. </sub>and SARS-CoV-2 as trace species. Airflow with a constant rate and concentration of trace species is supplied to a mixing volume. A GUV device is connected to the mixing volume to simulate removal of trace species from the volume, where the GUV does not inactivate CO<sub>2</sub> but inactivates SARS-CoV-2.</p>
 </html>"));
 end GUVExample;

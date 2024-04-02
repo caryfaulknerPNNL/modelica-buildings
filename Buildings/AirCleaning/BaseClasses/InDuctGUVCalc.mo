@@ -73,7 +73,7 @@ equation
 
   annotation (defaultComponentName="res",
 Documentation(info="<html>
-<p>Duct GUV calculation.</p>
+<p> This block calculates the pressure drop imposed by the in-duct germicidal ultraviolet device( <a href=\"Buildings.AirCleaning.DuctGUV\">AirCleaning.DuctGUV</a>) The pressure drop is calculated as the product of a constant and the square of the system airflow rate. The constant is determined  based o nthe nominal settings for the filter.</p>
 <p><b>Assumptions</b> </p>
 <h4>Important parameters</h4>
 <h4>Notes</h4>

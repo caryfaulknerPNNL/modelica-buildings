@@ -22,6 +22,7 @@ model DuctGUV "In Duct GUV"
   final parameter Real k = if computeFlowResistance then
         m_flow_nominal_pos / sqrt(dp_nominal_pos) else 0
     "Flow coefficient, k=m_flow/sqrt(dp), with unit=(kg.m)^(1/2)";
+
   Buildings.AirCleaning.BaseClasses.InDuctGUVCalc guvCal(
     redeclare package Medium = Medium,
     m_flow_nominal=m_flow_nominal,
@@ -39,8 +40,8 @@ protected
 protected
   Modelica.Blocks.Math.Gain pGUV(final k=kpow) "power of GUV"
     annotation (Placement(transformation(extent={{-48,-60},{-28,-40}})));
-  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prePow(final alpha=0)
- if addPowerToMedium
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prePow(final alpha=0) if
+    addPowerToMedium
     "Prescribed power (=heat and flow work) flow for dynamic model"
     annotation (Placement(transformation(extent={{-20,-60},{0,-40}})));
 initial equation
@@ -67,8 +68,18 @@ equation
           -10},{56,0},{44,0}}, color={0,127,255}));
   annotation (defaultComponentName="res",
 Documentation(info="<html>
-<p>Model of an in-duct GUV. </p>
+<p>This model is designed to simulate the inactivation of trace species by in-Duct germicidal ultraviolet (DuctGUV) devices when the DuctGUV is enabled <span style=\"font-family: Courier New;\">uDucGUVEna</span>. The DuctGUV model calculates the concentration of airborne pathogens in the supply air  after using the in-duct GUV device based on the equation described below. The DuctGUV device consumes energy based on a constant power rating, <span style=\"font-family: Courier New;\">kpow</span> whcih is dissipated into the airflow as heat. </p>
+<h4>Main Equations </h4>
+<p>c<sub>out</sub> = [1-eff<sub>GUV</sub>(flow<sub>GUV</sub>)]c<sub>in</sub> </p>
+<p>where c<sub>out</sub> is the pathogen concentration exiting the flow past the device, eff<sub>GUV</sub> is the removal efficency of the pathogen by the PAC, flow<sub>GUV</sub> is the volumetric airflow rate of air through th GUV, c<sub>in</sub> is the pathogen concentration of the flow entering the irradiated space of the device.eff<sub>GUV</sub>*(flow<sub>GUV</sub>) is the pathogen inactivation of the GUV device as a function of the flow rate.
+
+The pathogen inactivation efficency as a function of flow rate is modeled based on the dose of GUV outlined in the following equations
+
+<p>eff<sub>GUV</sub>(flow<sub>GUV</sub>) = 1 -exp(-E<sub>avg</sub>k<sub>rad</sub>V<sub>rad</sub>/flow<sub>GUV</sub>)  </p>
+
+where V<sub>rad</sub> is a volume of irradiated space in the duct, E<sub>avg</sub> is the average fluence rate of the GUV device, and k<sub>rad</sub> is susceptibility of the trace species to the GUV irrdiation,
 <h4>Assumptions</h4>
+<p>This assumes that the zone is well mixed and the parameters E<sub>avg</sub> and k<sub>rad</sub> are constant for the given simulation when the GUV device is on. </p>
 <h4>Important parameters</h4>
 <h4>Notes</h4>
 <h4>Implementation</h4>
