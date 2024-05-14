@@ -1,16 +1,18 @@
 ﻿within Buildings.AirCleaning;
 model PAC "In-room portable air cleaner"
+
   replaceable package Medium =
-    Modelica.Media.Interfaces.PartialMedium "Medium in the component";
+    Modelica.Media.Interfaces.PartialMedium
+    "Medium in the component";
 
   parameter Real eff[Medium.nC](min=0, max=1) = 0.9997
-    "trace species removal efficiency";
+    "Trace species removal efficiency";
 
   parameter Modelica.Units.SI.MassFlowRate flow_PAC(min=0) = 0.094
     "PAC flow rate";
 
   parameter Modelica.Units.SI.Power kpow(min=0) = 50
-    "Rated power";
+    "Rated power of PAC";
 
   Modelica.Blocks.Interfaces.RealInput C[Medium.nC] "Zone concentration(s)"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
@@ -62,8 +64,8 @@ equation
         info="<html>
 <p>This model is designed to simulate the removal of trace species using a portable air cleaner (PAC). The PAC model calculates the mass removal rate of trace species by the PAC (<span style=\"font-family: Courier New;\">yC_flow[]</span>) based on the equation described below when the PAC is on (<span style=\"font-family: Courier New;\">uPACEna</span>). The PACs are modeled to consume energy using a constant power rating (<span style=\"font-family: Courier New;\">kpow</span>) and heat is dissipated into the zone based on the consumed power. </p>
 <h4>Main Equations </h4>
-<p align=\"center\"><span style=\"font-family: Courier New;\">Ċ</span><sub>PAC</sub> = eff<sub>PAC</sub>* <span style=\"font-family: Courier New;\">flow</span><sub>PAC</sub>*c<sub>zone</sub> </p>
-<p>where <span style=\"font-family: Courier New;\">Ċ</span><sub>PAC</sub> is the rate of trace species removal by the PAC, eff<sub>PAC</sub> is the trace species removal efficency, <span style=\"font-family: Courier New;\">flow</span><sub>PAC</sub> is the mass airflow rate of the PAC, and c<sub>zone</sub> is the trace species concentration in the zone where the PAC is located.</p>
+<p align=\"center\"><span style=\"font-family: Courier New;\">Ċ</span><sub>PAC</sub> = eff<sub>PAC</sub>* <span style=\"font-family: Courier New;\"><code>V&#775;</code></span><sub>PAC</sub>*c<sub>zone</sub> </p>
+<p>where <span style=\"font-family: Courier New;\">Ċ</span><sub>PAC</sub> is the rate of trace species removal by the PAC, eff<sub>PAC</sub> is the trace species removal efficency, <span style=\"font-family: Courier New;\"><code>V&#775;</code></span><sub>PAC</sub> is the mass airflow rate of the PAC, and c<sub>zone</sub> is the trace species concentration in the zone where the PAC is located.</p>
 <h4>Assumptions</h4>
 <p>The model assumes well-mixed zones with uniform concentrations. </p>
 </html>", revisions="<html>

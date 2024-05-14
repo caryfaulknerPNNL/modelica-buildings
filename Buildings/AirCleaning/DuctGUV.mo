@@ -70,12 +70,12 @@ equation
 Documentation(info="<html>
 <p>This model is designed to simulate the inactivation of trace species by in-Duct germicidal ultraviolet (DuctGUV) devices when the DuctGUV is enabled <span style=\"font-family: Courier New;\">uDucGUVEna</span>. The DuctGUV model calculates the concentration of airborne pathogens in the supply air  after using the in-duct GUV device based on the equation described below. The DuctGUV device consumes energy based on a constant power rating, <span style=\"font-family: Courier New;\">kpow</span> whcih is dissipated into the airflow as heat. </p>
 <h4>Main Equations </h4>
-<p>c<sub>out</sub> = [1-eff<sub>GUV</sub>(flow<sub>GUV</sub>)]c<sub>in</sub> </p>
-<p>where c<sub>out</sub> is the pathogen concentration exiting the flow past the device, eff<sub>GUV</sub> is the removal efficency of the pathogen by the PAC, flow<sub>GUV</sub> is the volumetric airflow rate of air through th GUV, c<sub>in</sub> is the pathogen concentration of the flow entering the irradiated space of the device.eff<sub>GUV</sub>*(flow<sub>GUV</sub>) is the pathogen inactivation of the GUV device as a function of the flow rate.
+<p>c<sub>out</sub> = [1-eff<sub>GUV</sub>(<code>V&#775;</code><sub>GUV</sub>)]c<sub>in</sub> </p>
+<p>where c<sub>out</sub> is the pathogen concentration exiting the flow past the device, eff<sub>GUV</sub> is the removal efficency of the pathogen by the PAC, <code>V&#775;</code><sub>GUV</sub> is the volumetric airflow rate of air through th GUV, c<sub>in</sub> is the pathogen concentration of the flow entering the irradiated space of the device.eff<sub>GUV</sub>*(<code>V&#775;</code><sub>GUV</sub>) is the pathogen inactivation of the GUV device as a function of the flow rate.
 
 The pathogen inactivation efficency as a function of flow rate is modeled based on the dose of GUV outlined in the following equations
 
-<p>eff<sub>GUV</sub>(flow<sub>GUV</sub>) = 1 -exp(-E<sub>avg</sub>k<sub>rad</sub>V<sub>rad</sub>/flow<sub>GUV</sub>)  </p>
+<p>eff<sub>GUV</sub>(<code>V&#775;</code><sub>GUV</sub>) = 1 -exp(-E<sub>avg</sub>k<sub>rad</sub>V<sub>rad</sub>/<code>V&#775;</code><sub>GUV</sub>)  </p>
 
 where V<sub>rad</sub> is a volume of irradiated space in the duct, E<sub>avg</sub> is the average fluence rate of the GUV device, and k<sub>rad</sub> is susceptibility of the trace species to the GUV irrdiation,
 <h4>Assumptions</h4>
