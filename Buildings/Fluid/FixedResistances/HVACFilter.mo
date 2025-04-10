@@ -1,6 +1,7 @@
 within Buildings.Fluid.FixedResistances;
 model HVACFilter "HVAC filter"
-  extends Buildings.Fluid.BaseClasses.PartialHVACFilter(
+  extends Buildings.Fluid.BaseClasses.PartialHVACFilter(redeclare package
+      Medium = Medium,
     final m_flow_turbulent = if computeFlowResistance then deltaM * m_flow_nominal_pos else 0);
 
   parameter Real deltaM(min=1E-6)=0.3

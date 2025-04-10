@@ -2,6 +2,7 @@ within Buildings.Fluid.BaseClasses;
 partial model PartialHVACFilter
   "Partial model for a HVAC filter"
     extends Buildings.Fluid.Interfaces.PartialTwoPortInterface(
+    redeclare package Medium = Medium,
      show_T=false,
      dp(nominal=if dp_nominal_pos > Modelica.Constants.eps
           then dp_nominal_pos else 1),
@@ -28,13 +29,13 @@ partial model PartialHVACFilter
   parameter Modelica.Units.SI.MassFlowRate m_flow_turbulent(min=0)
     "Turbulent flow if |m_flow| >= m_flow_turbulent";
 
-  parameter Real eff(min=0, max=1) = 0.85
+  parameter Real eff[Medium.nC](max=1, min=0)
     "Efficiency of HVAC filter";
 
   parameter Boolean use_eff = false
     "= true, use m_flow = f(dp) else dp = f(m_flow)";
 
-  Modelica.Blocks.Interfaces.RealInput eff1 if use_eff
+  Modelica.Blocks.Interfaces.RealInput eff1[Medium.nC] if use_eff
     "Use external efficiency or not"
     annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
 
@@ -51,7 +52,7 @@ protected
       displayUnit="Pa") = abs(dp_nominal)
     "Absolute value of nominal pressure difference";
 
-  Modelica.Blocks.Interfaces.RealInput eff2
+  Modelica.Blocks.Interfaces.RealInput eff2[Medium.nC]
     "Use external efficiency or not";
 initial equation
   assert(homotopyInitialization, "In " + getInstanceName() +
@@ -74,9 +75,13 @@ equation
   if not use_eff then
     eff2 = eff;
   end if;
+  for i in 1:Medium.nC loop
+    port_b.C_outflow[i] = (1-eff2[i])*inStream(port_a.C_outflow[i]);
+  end for;
+
   port_a.C_outflow = if allowFlowReversal then inStream(port_b.C_outflow) else zeros(Medium.nC);
-  port_b.C_outflow[2] = (1-eff2)*inStream(port_a.C_outflow[2]);
-  port_b.C_outflow[1] = inStream(port_a.C_outflow[1]);
+  //port_b.C_outflow[2] = (1-eff2)*inStream(port_a.C_outflow[2]);
+  //port_b.C_outflow[1] = inStream(port_a.C_outflow[1]);
 
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}), graphics={

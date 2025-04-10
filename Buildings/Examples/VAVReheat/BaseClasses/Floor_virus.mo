@@ -101,6 +101,9 @@ model Floor_virus "Model of a floor of the building"
   parameter Real kdec(min=0)=0.76
     "Decay rate of virus";
 
+  parameter Real effPAC(max=1, min=0)=0.9997
+    "Efficency of zone PAC";
+
   Buildings.ThermalZones.Detailed.MixedAir_virus sou(
     redeclare package Medium = Medium,
     AFlo=AFloSou,
@@ -330,7 +333,7 @@ model Floor_virus "Model of a floor of the building"
     annotation (Placement(transformation(extent={{-100,170},{-80,190}})));
   Modelica.Blocks.Routing.Replicator replicator(nout=1)
     annotation (Placement(transformation(extent={{-60,170},{-40,190}})));
-  Modelica.Blocks.Sources.Constant const1(k=1)
+  Modelica.Blocks.Sources.Constant const1(k=0) "PM 2.5 generation"
     annotation (Placement(transformation(extent={{-138,-14},{-118,6}})));
   Modelica.Blocks.Sources.CombiTimeTable sickPeople(
     table=[0,0; 9,1; 17,0; 33,1; 41,0; 57,1; 65,0; 81,1; 89,0; 105,1; 113,0;

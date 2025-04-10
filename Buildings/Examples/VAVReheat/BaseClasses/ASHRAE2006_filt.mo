@@ -4,10 +4,11 @@ model ASHRAE2006_filt
   extends Buildings.Examples.VAVReheat.BaseClasses.PartialHVAC_filt(
     mCooWat_flow_nominal=1*QCooAHU_flow_nominal/cpWat/(-6),
     mHeaVAV_flow_nominal=0.3*mCooVAV_flow_nominal,
-    amb(nPorts=3),
+    amb(C={4e-6,0},
+        nPorts=3),
     filt(allowFlowReversal=true,
       dp_nominal=172,
-      eff=0),
+      eff={0.85,0.50}),
     fanSup(per(pressure(dp=2*{780 + 10 + 200 + dpBuiStaSet,0}))),
     inDucGUV(
       dp_nominal=0,
