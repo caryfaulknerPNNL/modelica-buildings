@@ -23,9 +23,9 @@ model GUV "In-room GUV"
   parameter Real V(min=0)=120
     "Zone volume";
 
-  Modelica.Blocks.Interfaces.RealInput C "Zone concentration"
+  Modelica.Blocks.Interfaces.RealInput[Medium.nC] C "Zone concentration"
     annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
-  Modelica.Blocks.Interfaces.RealOutput yC_flow
+  Modelica.Blocks.Interfaces.RealOutput[Medium.nC] yC_flow
     "Concentration outflow"
     annotation (Placement(transformation(extent={{100,30},{120,50}})));
   Modelica.Blocks.Interfaces.BooleanInput u "on/off"
@@ -51,9 +51,9 @@ protected
 
 equation
 
-  //for i in 1:Medium.nC loop
-  yC_flow = booleanToReal.y*1.2*(-frad)*Eavg*krad[2]*V*C;
-  //end for;
+  for i in 1:Medium.nC loop
+    yC_flow[i] = booleanToReal.y*1.2*(-frad)*Eavg*krad[i]*V*C[i];
+  end for;
 
   connect(u, booleanToReal.u)
     annotation (Line(points={{-120,-20},{-82,-20}}, color={255,0,255}));

@@ -2,7 +2,7 @@ within Buildings.Examples.VAVReheat;
 model ASHRAE2006_Dev
   "Variable air volume flow system with terminal reheat and five thermal zones"
   extends Modelica.Icons.Example;
-  extends OutputVariableSelection;
+  //extends OutputVariableSelection;
   extends Buildings.Examples.VAVReheat.BaseClasses.HVACBuilding(
     mCor_flow_nominal=ACHCor*VRooCor*conv,
     mSou_flow_nominal=ACHSou*VRooSou*conv,
@@ -13,7 +13,9 @@ model ASHRAE2006_Dev
     redeclare Buildings.Examples.VAVReheat.BaseClasses.ASHRAE2006_filt hvac(TCooOff=
           297.15, kGUV={1,1}),
     redeclare replaceable Buildings.Examples.VAVReheat.BaseClasses.Floor_virus flo(
-      sampleModel=true));
+      sampleModel=true,
+      kdec={1,1},
+      effPAC=1));
 
   parameter Real ACHCor(final unit="1/h")=6
     "Design air change per hour core";
@@ -204,7 +206,7 @@ This is for
           "modelica://Buildings/Resources/Scripts/Dymola/Examples/VAVReheat/ASHRAE2006.mos"
         "Simulate and plot"),
     experiment(
-      StopTime=31536000,
+      StopTime=86400,
       Tolerance=1e-06,
       __Dymola_Algorithm="Cvode"),
     Icon(coordinateSystem(extent={{-100,-100},{100,100}})));

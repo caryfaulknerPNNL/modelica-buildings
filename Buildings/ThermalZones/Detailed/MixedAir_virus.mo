@@ -81,7 +81,7 @@ model MixedAir_virus
     "Nominal value of zone air trace substances. (Set to typical order of magnitude.)"
    annotation (Dialog(tab="Initialization", enable=Medium.nC > 0));
 
-  parameter Real kdec(min=0)=0.48
+  parameter Real[Medium.nC] kdec(min=0)
     "Decay rate of virus";
 
    parameter Real frad(
@@ -94,15 +94,13 @@ model MixedAir_virus
     min=0)=50e-6
     "Effluence rate";
 
-  parameter Real krad[Medium.nC](min=0)={0,0}
+  parameter Real krad[Medium.nC](min=0)
     "Inactivation constant";
 
   parameter Real kpow_GUV(min=0)=120
     "Rated power";
 
-  parameter Real eff[Medium.nC](
-    max=1,
-    min=0)={0,0.9997}
+  parameter Real eff[Medium.nC](max=1, min=0)
     "Virus removal efficiency";
 
   parameter Integer nPACs(min=0)=1

@@ -12,7 +12,7 @@ model ASHRAE2006_filt
     fanSup(per(pressure(dp=2*{780 + 10 + 200 + dpBuiStaSet,0}))),
     inDucGUV(
       dp_nominal=0,
-      kGUV={1,1},
+      kGUV={1e6,1},
       kpow=0));
 
   parameter Real ratVMinVAV_flow[numZon](unit="1")={max(1.5*VZonOA_flow_nominal[
@@ -713,5 +713,6 @@ This is for
           fillColor={255,255,255},
           fillPattern=FillPattern.Backward,
           origin={230,153},
-          rotation=90)}));
+          rotation=90)}),
+    experiment(StopTime=86400, __Dymola_Algorithm="Dassl"));
 end ASHRAE2006_filt;

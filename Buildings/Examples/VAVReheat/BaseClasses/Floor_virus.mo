@@ -98,10 +98,10 @@ model Floor_virus "Model of a floor of the building"
       Evaluate=true,
       Dialog(tab="Experimental (may be changed in future releases)"));
 
-  parameter Real kdec(min=0)=0.76
+  parameter Real[Medium.nC] kdec(min=0)
     "Decay rate of virus";
 
-  parameter Real effPAC(max=1, min=0)=0.9997
+  parameter Real effPAC(max=1, min=0)
     "Efficency of zone PAC";
 
   Buildings.ThermalZones.Detailed.MixedAir_virus sou(
@@ -136,7 +136,7 @@ model Floor_virus "Model of a floor of the building"
     Eavg=0,
     krad={0,0},
     kpow_GUV=0,
-    eff={0,0.9997},
+    eff={0,0},
     nPACs=0,
     flowPAC=0,
     kpow_PAC=0,
@@ -182,7 +182,7 @@ model Floor_virus "Model of a floor of the building"
     Eavg=0,
     krad={0,0},
     kpow_GUV=0,
-    eff={0,0.9997},
+    eff={0,0},
     nPACs=0,
     flowPAC=0,
     kpow_PAC=0,
@@ -223,7 +223,7 @@ model Floor_virus "Model of a floor of the building"
     Eavg=0,
     krad={0,0},
     kpow_GUV=0,
-    eff={0,0.9997},
+    eff={0,0},
     nPACs=0,
     flowPAC=0,
     kpow_PAC=0,
@@ -269,7 +269,7 @@ model Floor_virus "Model of a floor of the building"
     Eavg=0,
     krad={0,0},
     kpow_GUV=0,
-    eff={0,0.9997},
+    eff={0,0},
     nPACs=0,
     flowPAC=0,
     kpow_PAC=0,
@@ -302,7 +302,7 @@ model Floor_virus "Model of a floor of the building"
     Eavg=0,
     krad={0,0},
     kpow_GUV=0,
-    eff={0,0.9997},
+    eff={0,0},
     nPACs=0,
     flowPAC=0,
     kpow_PAC=0,

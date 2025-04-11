@@ -22,7 +22,7 @@ model MixedAirHeatMassBalance_virus
     "Set to true to enable input connector for trace substance"
     annotation (Dialog(group="Ports"));
 
-  parameter Real kdec(min=0)=0.48
+  parameter Real kdec[Medium.nC](min=0)
     "Decay rate of virus";
 
   parameter Real frad(
@@ -35,15 +35,13 @@ model MixedAirHeatMassBalance_virus
     min=0)=50e-6
     "Effluence rate";
 
-  parameter Real krad[Medium.nC](min=0)={0,0}
+  parameter Real krad[Medium.nC](min=0)
     "Inactivation constant";
 
   parameter Real kpow_GUV(min=0)=120
     "Rated power";
 
-  parameter Real eff[Medium.nC](
-    max=1,
-    min=0)={0,0.9997}
+  parameter Real eff[Medium.nC](max=1, min=0)
     "Virus removal efficiency";
 
   parameter Integer nPACs(min=0)=1
@@ -146,11 +144,13 @@ model MixedAirHeatMassBalance_virus
     annotation (Placement(transformation(extent={{122,-230},{102,-210}})));
 
   // Latent and convective sensible heat gains
-  ViralDecay viralDecay(kdec=kdec, V=V)
+  ViralDecay viralDecay(
+    redeclare package Medium = Medium,
+                        kdec=kdec, V=V)
     annotation (Placement(transformation(extent={{-98,-48},{-78,-28}})));
-  Modelica.Blocks.Math.Add add
+  Modelica.Blocks.Math.Add add[Medium.nC]
     annotation (Placement(transformation(extent={{-52,-54},{-32,-34}})));
-  Modelica.Blocks.Sources.RealExpression virConc(y=vol.C[2])
+  Modelica.Blocks.Sources.RealExpression[Medium.nC] virConc(y=vol.C)
     "virus concentration"
     annotation (Placement(transformation(extent={{-166,-44},{-146,-24}})));
   Modelica.Blocks.Interfaces.BooleanInput u_on_off
@@ -162,7 +162,7 @@ model MixedAirHeatMassBalance_virus
     krad=krad,
     kpow=kpow_GUV,
     V=V)  annotation (Placement(transformation(extent={{-100,14},{-80,34}})));
-  Modelica.Blocks.Math.Add add1
+  Modelica.Blocks.Math.Add add1[Medium.nC]
     annotation (Placement(transformation(extent={{-14,-40},{6,-20}})));
   PAC pAC(
     redeclare package Medium = Medium,
@@ -171,7 +171,7 @@ model MixedAirHeatMassBalance_virus
     flowPAC=flowPAC,
     kpow=kpow_PAC)
     annotation (Placement(transformation(extent={{-56,30},{-36,50}})));
-  Modelica.Blocks.Math.Add add2
+  Modelica.Blocks.Math.Add add2[Medium.nC]
     annotation (Placement(transformation(extent={{30,2},{50,22}})));
   Fluid.Sensors.RelativeHumidity senRelHum(redeclare package Medium=Medium)
     annotation (Placement(transformation(extent={{-36,-138},{-16,-118}})));
@@ -386,12 +386,8 @@ equation
           -80},{-230,-160},{-260,-160}}, color={0,0,127}));
   connect(conQLat_flow.port, vol.heatPort) annotation (Line(points={{-200,-80},{
           -96,-80},{20,-80},{20,-200},{10,-200}}, color={191,0,0}));
-  connect(vol.C_flow[1], C_flow[1]) annotation (Line(points={{12,-206},{16,-206},{16,-220},
-          {-260,-220}}, color={0,0,127}));
   connect(viralDecay.y, add.u1)
     annotation (Line(points={{-77,-38},{-54,-38}}, color={0,0,127}));
-  connect(C_flow[2], add.u2) annotation (Line(points={{-260,-220},{-56,-220},{-56,
-          -60},{-62,-60},{-62,-50},{-54,-50}}, color={0,0,127}));
   connect(virConc.y, viralDecay.u) annotation (Line(points={{-145,-34},{-108,-34},
           {-108,-38},{-100,-38}}, color={0,0,127}));
   connect(u_on_off, gUV.u) annotation (Line(points={{-260,-40},{-180,-40},{-180,
@@ -416,8 +412,6 @@ equation
     annotation (Line(points={{-35,44},{28,44},{28,18}}, color={0,0,127}));
   connect(add1.y, add2.u2)
     annotation (Line(points={{7,-30},{28,-30},{28,6}}, color={0,0,127}));
-  connect(add2.y, vol.C_flow[2]) annotation (Line(points={{51,12},{58,12},{58,-44},
-          {30,-44},{30,-206},{12,-206}}, color={0,0,127}));
   connect(ports[1], senRelHum.port) annotation (Line(points={{-16,-238},{-16,-216},
           {-22,-216},{-22,-144},{-26,-144},{-26,-138}},color={0,127,255}));
   connect(senRelHum3.port, ports[2]) annotation (Line(points={{-40,-162},{-40,-238},
@@ -431,6 +425,10 @@ equation
   connect(senRelHum1.port, ports[5]) annotation (Line(points={{-10,-106},{-10,-120},
           {-8,-120},{-8,-144},{-22,-144},{-22,-216},{-26,-216},{-26,-222},{16,-222},
           {16,-238}},           color={0,127,255}));
+  connect(C_flow, add.u2) annotation (Line(points={{-260,-220},{-66,-220},{-66,-60},
+          {-72,-60},{-72,-50},{-54,-50}}, color={0,0,127}));
+  connect(add2.y, vol.C_flow) annotation (Line(points={{51,12},{68,12},{68,-204},
+          {22,-204},{22,-206},{12,-206}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-240,-240},{240,
             240}})),
