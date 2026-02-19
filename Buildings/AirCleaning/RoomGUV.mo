@@ -1,4 +1,4 @@
-﻿within Buildings.AirCleaning;
+within Buildings.AirCleaning;
 model RoomGUV "In-room GUV"
 
   replaceable package Medium =

@@ -62,8 +62,8 @@ equation
   connect(prePow.port, vol.heatPort) annotation (Line(points={{0,-50},{0,0}},
                                  color={191,0,0}));
   connect(port_a, vol.ports[1]) annotation (Line(points={{-100,0},{-6,0},{-6,
-          -12},{2,-12},{2,-14},{8,-14},{8,-10}}, color={0,127,255}));
-  connect(vol.ports[2], guvCal.port_a) annotation (Line(points={{12,-10},{56,
+          -12},{2,-12},{2,-14},{9,-14},{9,-10}}, color={0,127,255}));
+  connect(vol.ports[2], guvCal.port_a) annotation (Line(points={{11,-10},{56,
           -10},{56,0},{44,0}}, color={0,127,255}));
   annotation (defaultComponentName="res",
 Documentation(info="<html>

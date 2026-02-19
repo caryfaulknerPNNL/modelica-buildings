@@ -1,4 +1,4 @@
-﻿within Buildings.AirCleaning;
+within Buildings.AirCleaning;
 model PAC "In-room portable air cleaner"
   replaceable package Medium =
     Modelica.Media.Interfaces.PartialMedium "Medium in the component";
