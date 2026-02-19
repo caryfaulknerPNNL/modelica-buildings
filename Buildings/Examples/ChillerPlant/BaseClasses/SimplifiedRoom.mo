@@ -40,7 +40,7 @@ model SimplifiedRoom "Simplified data center room"
     offset=0,
     duration=36000,
     startTime=0)
-    annotation (Placement(transformation(extent={{-60,-40},{-40,-20}})));
+    annotation (Placement(transformation(extent={{-60,-60},{-40,-40}})));
   parameter Modelica.Units.SI.MassFlowRate m_flow_nominal
     "Nominal mass flow rate";
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor TAir
@@ -49,6 +49,14 @@ model SimplifiedRoom "Simplified data center room"
   Modelica.Blocks.Interfaces.RealOutput TRooAir(unit="K", displayUnit="degC")
     "Room air temperature" annotation (Placement(transformation(extent={{100,-10},
             {120,10}}), iconTransformation(extent={{100,-10},{120,10}})));
+  Modelica.Blocks.Sources.Sine sine(
+    amplitude=QRoo_flow/4,
+    f=1/86400,
+    offset=3*QRoo_flow/4,
+    startTime=3*3600)
+    annotation (Placement(transformation(extent={{-60,0},{-40,20}})));
+  Modelica.Blocks.Interfaces.RealInput uQflow
+    annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
 equation
   connect(rooVol.ports, airPorts) annotation (Line(
       points={{51,-40},{52,-40},{52,-80},{0,-80},{0,-100}},
@@ -58,14 +66,12 @@ equation
       points={{2,-30},{41,-30}},
       color={191,0,0},
       smooth=Smooth.None));
-  connect(ramp.y, QSou.Q_flow) annotation (Line(
-      points={{-39,-30},{-18,-30}},
-      color={0,0,127},
-      smooth=Smooth.None));
   connect(TAir.port, rooVol.heatPort) annotation (Line(points={{40,0},{30,0},{
           30,-30},{41,-30}}, color={191,0,0}));
-  connect(TAir.T, TRooAir) annotation (Line(points={{60,0},{76,0},{110,0}},
+  connect(TAir.T, TRooAir) annotation (Line(points={{61,0},{61,0},{110,0}},
                color={0,0,127}));
+  connect(uQflow, QSou.Q_flow) annotation (Line(points={{-120,20},{-66,20},{-66,
+          -30},{-18,-30}}, color={0,0,127}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
             100}}), graphics={Rectangle(

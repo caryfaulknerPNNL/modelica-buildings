@@ -55,11 +55,15 @@ model WSEControl "Control unit for WSE"
     condition=wseCHWST < wseCWST + dTOff,
     enableTimer=true)
     annotation (Placement(transformation(extent={{122,72},{158,108}})));
-  Modelica.Blocks.Math.BooleanToReal booToRea1(realTrue=0, realFalse=1)
+  Modelica.Blocks.Math.BooleanToReal booToRea1(realTrue=1, realFalse=0)
     annotation (Placement(transformation(extent={{140,30},{160,50}})));
   inner Modelica.StateGraph.StateGraphRoot stateGraphRoot
     "Root of the state graph"
     annotation (Placement(transformation(extent={{0,140},{20,160}})));
+  Modelica.Blocks.Sources.BooleanConstant booleanConstant(k=false)
+    annotation (Placement(transformation(extent={{54,28},{74,48}})));
+  Modelica.Blocks.Sources.BooleanConstant booleanConstant1
+    annotation (Placement(transformation(extent={{70,-34},{90,-14}})));
 equation
 
   connect(booToRea2.y, y2)
@@ -87,10 +91,10 @@ equation
       points={{161,40},{190,40}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(off.active, booToRea1.u)
-    annotation (Line(points={{10,76.8},{10,40},{138,40}}, color={255,0,255}));
-  connect(off.active, booToRea2.u) annotation (Line(points={{10,76.8},{10,-40},{
-          138,-40}}, color={255,0,255}));
+  connect(booleanConstant.y, booToRea1.u) annotation (Line(points={{75,38},{130,
+          38},{130,40},{138,40}}, color={255,0,255}));
+  connect(booleanConstant1.y, booToRea2.u) annotation (Line(points={{91,-24},{
+          130,-24},{130,-40},{138,-40}}, color={255,0,255}));
   annotation (
     defaultComponentName="wseCon",
     Icon(coordinateSystem(

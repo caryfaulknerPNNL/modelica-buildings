@@ -2,3 +2,6 @@ DataCenterContinuousTimeControl
 DataCenterDiscreteTimeControl
 DataCenterRenewables
 BaseClasses
+DataCenterContinuousTimeControl_test
+DataCenterContinuousTimeControl_test_io
+DataCenterContinuousTimeControl_test_io_weather

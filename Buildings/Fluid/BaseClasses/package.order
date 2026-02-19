@@ -1,6 +1,7 @@
 ActuatorFilter
 IndexMassFraction
 MassFlowRateMultiplier
+PartialHVACFilter
 PartialResistance
 PartialThreeWayResistance
 FlowModels

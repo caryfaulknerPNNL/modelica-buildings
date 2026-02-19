@@ -111,6 +111,8 @@ model CoolingMode
     "Switch boolean signals to real signal"
     annotation (Placement(transformation(extent={{64,-6},{88,6}})));
 
+  Modelica.Blocks.Interfaces.IntegerInput uCooModCon
+    annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
 equation
   connect(freCoo.outPort[1], con1.inPort)
     annotation (Line(
@@ -119,12 +121,12 @@ equation
       pattern=LinePattern.Dash));
   connect(con1.outPort, parMecCoo.inPort[1])
     annotation (Line(
-      points={{-10,38.5},{-10,26},{-10.5,26},{-10.5,19}},
+      points={{-10,38.5},{-10,26},{-9.75,26},{-9.75,19}},
       color={0,0,0},
       pattern=LinePattern.Dash));
   connect(con2.inPort, parMecCoo.outPort[1])
     annotation (Line(
-      points={{-10,-30},{-10,-10},{-10.25,-10},{-10.25,-2.5}},
+      points={{-10,-30},{-10,-10},{-9.875,-10},{-9.875,-2.5}},
       color={0,0,0},
       pattern=LinePattern.Dash));
   connect(con2.outPort, fulMecCoo.inPort[1])
@@ -144,24 +146,24 @@ equation
       pattern=LinePattern.Dash));
   connect(con3.outPort, parMecCoo.inPort[2])
     annotation (Line(
-      points={{24,-38.5},{24,26},{-9.5,26},{-9.5,19}},
+      points={{24,-38.5},{24,26},{-10.25,26},{-10.25,19}},
       color={0,0,0},
       pattern=LinePattern.Dash));
   connect(con4.inPort, parMecCoo.outPort[2])
     annotation (Line(
-      points={{20,46},{20,-10},{-9.75,-10},{-9.75,-2.5}},
+      points={{20,46},{20,-10},{-10.125,-10},{-10.125,-2.5}},
       color={0,0,0},
       pattern=LinePattern.Dash));
-  connect(swi.y, y)
-    annotation (Line(points={{88.6,0},{110,0}}, color={255,127,0}));
   connect(freCoo.active, swi.u[1])
-    annotation (Line(points={{1,70},{40,70},{40,1.2},{64,1.2}},
+    annotation (Line(points={{1,70},{40,70},{40,-0.6},{64,-0.6}},
                                   color={255,0,255}));
   connect(parMecCoo.active, swi.u[2])
     annotation (Line(points={{1,8},{38,8},{38,0},{64,0}},  color={255,0,255}));
   connect(fulMecCoo.active, swi.u[3])
-    annotation (Line(points={{1,-80},{40,-80},{40,-1.2},{64,-1.2}},
+    annotation (Line(points={{1,-80},{40,-80},{40,0.6},{64,0.6}},
                                          color={255,0,255}));
+  connect(uCooModCon, y) annotation (Line(points={{-120,60},{-24,60},{-24,92},{
+          96,92},{96,0},{110,0}}, color={255,127,0}));
   annotation (    Documentation(info="<html>
 <p>
 Controller that outputs if the chilled water system is in Free Cooling (FC) mode,

@@ -317,8 +317,8 @@ equation
       smooth=Smooth.None,
       pattern=LinePattern.Dash));
   connect(linPieTwo.y[2], chi.TSet) annotation (Line(
-      points={{-99,200.3},{-82,200},{-64,200},{-64,125},{284,125},{284,90},{276,
-          90}},
+      points={{-99,200.05},{-82,200.05},{-64,200.05},{-64,125},{284,125},{284,
+          90},{276,90}},
       color={0,0,127},
       smooth=Smooth.None,
       pattern=LinePattern.Dash));
@@ -328,7 +328,7 @@ equation
       smooth=Smooth.None,
       pattern=LinePattern.Dash));
   connect(linPieTwo.y[2], chiSwi.TSet) annotation (Line(
-      points={{-99,200.3},{-64,200.3},{-64,249},{-274,249},{-274,88},{-227,88}},
+      points={{-99,200.05},{-64,200.05},{-64,249},{-274,249},{-274,88},{-227,88}},
       color={0,0,127},
       smooth=Smooth.None,
       pattern=LinePattern.Dash));
@@ -375,12 +375,12 @@ equation
       smooth=Smooth.None,
       thickness=0.5));
   connect(roo.airPorts[1],TAirSup. port_b) annotation (Line(
-      points={{250.475,-229.3},{250.475,-225},{278,-225}},
+      points={{247.438,-229.3},{247.438,-225},{278,-225}},
       color={0,127,255},
       smooth=Smooth.None,
       thickness=0.5));
   connect(roo.airPorts[2], cooCoi.port_a2) annotation (Line(
-      points={{246.425,-229.3},{246.425,-225},{218,-225},{218,-176},{280,-176}},
+      points={{249.462,-229.3},{249.462,-225},{218,-225},{218,-176},{280,-176}},
       color={0,127,255},
       smooth=Smooth.None,
       thickness=0.5));
@@ -521,7 +521,7 @@ equation
       smooth=Smooth.None,
       pattern=LinePattern.Dash));
   connect(linPieTwo.y[1], gain.u) annotation (Line(
-      points={{-99,199.3},{-80,199.3},{-80,100},{-62,100}},
+      points={{-99,199.55},{-80,199.55},{-80,100},{-62,100}},
       color={0,0,127},
       smooth=Smooth.None,
       pattern=LinePattern.Dash));

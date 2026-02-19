@@ -78,10 +78,24 @@ model CoolingTowerSpeed "Controller for the fan speed in cooling towers"
     reverseActing=reverseActing)
     "PID controller"
     annotation (Placement(transformation(extent={{20,-50},{40,-30}})));
-  Modelica.Blocks.Math.IntegerToBoolean fmcMod(threshold=3)
+  Modelica.Blocks.Math.IntegerToBoolean fmcMod(threshold=2)
     "Fully mechanical cooling mode"
     annotation (Placement(transformation(extent={{-80,30},{-60,50}})));
 
+  Buildings.Controls.Continuous.LimPID conPID1(
+    controllerType=controllerType,
+    k=k,
+    Ti=Ti,
+    Td=Td,
+    yMax=yMax,
+    yMin=yMin,
+    reverseActing=reverseActing)
+    "PID controller"
+    annotation (Placement(transformation(extent={{70,-86},{90,-66}})));
+  Modelica.Blocks.Sources.Constant minCW(k=4 + 273.15)
+    annotation (Placement(transformation(extent={{34,-86},{54,-66}})));
+  Modelica.Blocks.Math.Min min1
+    annotation (Placement(transformation(extent={{66,-48},{86,-28}})));
 protected
   Modelica.Blocks.Logical.Switch swi1
     "Switch 1"
@@ -123,14 +137,22 @@ equation
   connect(conPID.y, swi3.u3)
     annotation (Line(points={{41,-40},{50,-40},{50,-8},
           {62,-8}}, color={0,0,127}));
-  connect(swi3.y, y)
-    annotation (Line(points={{85,0},{110,0}}, color={0,0,127}));
   connect(fmcMod.y, swi1.u2)
     annotation (Line(points={{-59,40},{-32,40}},
                      color={255,0,255}));
   connect(cooMod, fmcMod.u)
     annotation (Line(points={{-120,40},{-102,40},{-82,
           40}}, color={255,127,0}));
+  connect(minCW.y, conPID1.u_s)
+    annotation (Line(points={{55,-76},{68,-76}}, color={0,0,127}));
+  connect(TCWSup, conPID1.u_m) annotation (Line(points={{-120,-40},{-50,-40},{
+          -50,-72},{-56,-72},{-56,-98},{80,-98},{80,-88}}, color={0,0,127}));
+  connect(conPID.y, min1.u1) annotation (Line(points={{41,-40},{50,-40},{50,-32},
+          {64,-32}}, color={0,0,127}));
+  connect(conPID1.y, min1.u2) annotation (Line(points={{91,-76},{96,-76},{96,
+          -54},{64,-54},{64,-44}}, color={0,0,127}));
+  connect(min1.y, y) annotation (Line(points={{87,-38},{96,-38},{96,0},{110,0}},
+        color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,80}})),    Documentation(info="<html>
 <p>This model describes a simple cooling tower speed controller for

@@ -51,6 +51,9 @@ First implementation.
 </ul>
 </html>"),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-400,-300},{400,
-            300}}), graphics),
-    experiment(StartTime=13046400, Tolerance=1e-6, StopTime=13651200));
+            300}})),
+    experiment(
+      StopTime=31536000,
+      Tolerance=1e-06,
+      __Dymola_Algorithm="Dassl"));
 end DataCenterContinuousTimeControl;
