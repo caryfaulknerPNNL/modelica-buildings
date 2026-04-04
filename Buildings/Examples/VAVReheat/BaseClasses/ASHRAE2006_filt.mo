@@ -4,15 +4,17 @@ model ASHRAE2006_filt
   extends Buildings.Examples.VAVReheat.BaseClasses.PartialHVAC_filt(
     mCooWat_flow_nominal=1*QCooAHU_flow_nominal/cpWat/(-6),
     mHeaVAV_flow_nominal=0.3*mCooVAV_flow_nominal,
-    amb(C={4e-6,0},
+    amb(
+      use_C_in=true,
+      C={16e-6,0},
         nPorts=3),
     filt(allowFlowReversal=true,
-      dp_nominal=172,
-      eff={0.85,0.50}),
+      dp_nominal=187,
+      eff={0.69,0.77}),
     fanSup(per(pressure(dp=2*{780 + 10 + 200 + dpBuiStaSet,0}))),
     inDucGUV(
       dp_nominal=0,
-      kGUV={1e6,1},
+      kGUV=kGUV,
       kpow=0));
 
   parameter Real ratVMinVAV_flow[numZon](unit="1")={max(1.5*VZonOA_flow_nominal[
@@ -112,6 +114,26 @@ model ASHRAE2006_filt
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={490,30})));
+  Modelica.Blocks.Sources.Sine sine(
+    amplitude=14e-6,
+    f=1/86400,
+    offset=16e-6)
+    annotation (Placement(transformation(extent={{-222,-78},{-202,-58}})));
+  Modelica.Blocks.Sources.Constant const(k=0)
+    annotation (Placement(transformation(extent={{-350,-120},{-330,-100}})));
+  Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(
+    tableOnFile=true,
+    tableName="tab1",
+    fileName=
+        "./Buildings/Resources/Data/Examples/ASHRAE2006_Dev/modelica_marshall_summer.txt",
+    columns={2},
+    extrapolation=Modelica.Blocks.Types.Extrapolation.LastTwoPoints)
+    annotation (Placement(transformation(extent={{-340,-88},{-320,-68}})));
+
+  Modelica.Blocks.Sources.Constant const1(k=34e-6)
+    annotation (Placement(transformation(extent={{-318,-158},{-298,-138}})));
+  Modelica.Blocks.Sources.BooleanConstant booleanConstant(k=false)
+    annotation (Placement(transformation(extent={{-136,130},{-116,150}})));
 equation
   connect(controlBus, modeSelector.cb) annotation (Line(
       points={{-240,-340},{-152,-340},{-152,-303.182},{-196.818,-303.182}},
@@ -200,9 +222,6 @@ equation
   connect(or2.y, conTSup.uEna) annotation (Line(points={{-78,-240},{-70,-240},{
           -70,-226},{-62,-226}},
                                color={255,0,255}));
-  connect(modeSelector.yEco, conEco.uEna) annotation (Line(points={{-179.091,
-          -314.545},{-160,-314.545},{-160,100},{-73.3333,100},{-73.3333,137.333}},
-        color={255,0,255}));
   connect(TMix.T, conEco.TMix) annotation (Line(points={{20,-29},{20,166},{-90,
           166},{-90,148},{-81.3333,148}}, color={0,0,127}));
   connect(controlBus, TSupSet.controlBus) annotation (Line(
@@ -321,6 +340,15 @@ equation
   connect(modeSelector.yFan, conVAV[5].uFan) annotation (Line(points={{-179.091,
           -305.455},{16,-305.455},{16,-328},{408,-328},{408,-56},{432,-56},{432,
           104},{568,104},{568,80},{582,80},{582,53}}, color={255,0,255}));
+  connect(const.y, amb.C_in[2]) annotation (Line(points={{-329,-110},{-248,-110},
+          {-248,-96},{-138.2,-96},{-138.2,-53.8}},
+                           color={0,0,127}));
+  connect(booleanConstant.y, conEco.uEna) annotation (Line(points={{-115,140},{
+          -96,140},{-96,128},{-74,128},{-74,137.333},{-73.3333,137.333}}, color
+        ={255,0,255}));
+  connect(combiTimeTable.y[1], amb.C_in[1]) annotation (Line(points={{-319,-78},
+          {-319,-58},{-264,-58},{-264,-98},{-138.2,-98},{-138.2,-53.8}}, color=
+          {0,0,127}));
   annotation (
   defaultComponentName="hvac",
     Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-380,-400},{1420,
@@ -714,5 +742,8 @@ This is for
           fillPattern=FillPattern.Backward,
           origin={230,153},
           rotation=90)}),
-    experiment(StopTime=86400, __Dymola_Algorithm="Dassl"));
+    experiment(
+      StartTime=16934400,
+      StopTime=17535600,
+      __Dymola_Algorithm="Dassl"));
 end ASHRAE2006_filt;

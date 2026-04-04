@@ -150,8 +150,6 @@ equation
           220,-60}}, color={0,0,127}));
   connect(uEna, swiModClo.u2) annotation (Line(points={{-120,190},{140,190},{
           140,20},{124,20},{124,0},{128,0}}, color={255,0,255}));
-  connect(closed.y, swiModClo.u3) annotation (Line(points={{51,40},{120,40},{120,
-          -8},{128,-8}}, color={0,0,127}));
   connect(maxOutDam.u1, swiOA.y) annotation (Line(points={{38,6},{20,6},{20,100},
           {120,100},{120,120},{112,120}}, color={0,0,127}));
   connect(conV_flow.y, maxOutDam.u2) annotation (Line(points={{12,-20},{20,-20},
@@ -164,6 +162,8 @@ equation
           -6},{168,-6}}, color={0,0,127}));
   connect(conOne.y, invSig.u1) annotation (Line(points={{122,80},{160,80},{160,6},
           {168,6}}, color={0,0,127}));
+  connect(conV_flow.y, swiModClo.u3) annotation (Line(points={{12,-20},{120,-20},
+          {120,-8},{128,-8}}, color={0,0,127}));
   annotation (defaultComponentName="conEco",
     Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{200,
             200}})),

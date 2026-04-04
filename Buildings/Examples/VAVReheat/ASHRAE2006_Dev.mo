@@ -11,11 +11,26 @@ model ASHRAE2006_Dev
     mWes_flow_nominal=ACHWes*VRooWes*conv,
     MediumA(extraPropertiesNames={"CO2", "COVID"}),
     redeclare Buildings.Examples.VAVReheat.BaseClasses.ASHRAE2006_filt hvac(TCooOff=
-          297.15, kGUV={1,1}),
+          297.15, kGUV={1e6,1e6}),
     redeclare replaceable Buildings.Examples.VAVReheat.BaseClasses.Floor_virus flo(
       sampleModel=true,
-      kdec={1,1},
-      effPAC=1));
+      kdec={0.5,0.93},
+      frad=0,
+      Eavg=0,
+      krad={0,0},
+      kpow_GUV_Sou_Nor=0,
+      kpow_GUV_Eas_Wes=0,
+      kpow_GUV_Cor=0,
+      eff={0.93,1.0},
+      nPACs=1,
+      flowPAC_Sou_Nor=1.2*0.14,
+      flowPAC_Eas_Wes=0.106,
+      flowPAC_Cor=0.796,
+      kpow_PAC_Sou_Nor=67,
+      kpow_PAC_Eas_Wes=42,
+      kpow_PAC_Cor=318),
+    weaDat(filNam=Modelica.Utilities.Files.loadResource(
+          "modelica://Buildings/Resources/weatherdata/USA_CO_Denver.Intl.AP.725650_TMY3.mos")));
 
   parameter Real ACHCor(final unit="1/h")=6
     "Design air change per hour core";
@@ -206,7 +221,8 @@ This is for
           "modelica://Buildings/Resources/Scripts/Dymola/Examples/VAVReheat/ASHRAE2006.mos"
         "Simulate and plot"),
     experiment(
-      StopTime=86400,
+      StartTime=16934400,
+      StopTime=17535600,
       Tolerance=1e-06,
       __Dymola_Algorithm="Cvode"),
     Icon(coordinateSystem(extent={{-100,-100},{100,100}})));

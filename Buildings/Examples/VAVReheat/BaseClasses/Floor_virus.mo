@@ -10,7 +10,8 @@ model Floor_virus "Model of a floor of the building"
     AFloSou=568.77/hRoo,
     AFloNor=568.77/hRoo,
     AFloEas=360.0785/hRoo,
-    AFloWes=360.0785/hRoo);
+    AFloWes=360.0785/hRoo,
+    out(C={16e-6,0}));
 
   parameter Modelica.Units.SI.Length wExtSou=49.91
     "South zone exterior wall width";
@@ -98,11 +99,64 @@ model Floor_virus "Model of a floor of the building"
       Evaluate=true,
       Dialog(tab="Experimental (may be changed in future releases)"));
 
-  parameter Real[Medium.nC] kdec(min=0)
-    "Decay rate of virus";
+  parameter Real[Medium.nC] kdec(min=0)=kdec
+    "Decay rate of virus[1/hr]"
+    annotation(Dialog(tab="SARS-CoV2"));
 
-  parameter Real effPAC(max=1, min=0)
-    "Efficency of zone PAC";
+   parameter Real frad(
+    max=1,
+    min=0)=0.2
+    "Fraction of irradiated space"
+    annotation(Dialog(tab="GUV"));
+
+  parameter Real Eavg(
+    max=1,
+    min=0)=50e-6
+    "Effluence rate[W/cm^2]"
+    annotation(Dialog(tab="GUV"));
+
+  parameter Real krad[Medium.nC](min=0)=krad
+    "Inactivation constant[cm^2/J]"
+    annotation(Dialog(tab="GUV"));
+
+  parameter Real kpow_GUV_Sou_Nor(min=0)=53
+    "Rated power in South and North Zone"
+    annotation(Dialog(tab="GUV"));
+  parameter Real kpow_GUV_Eas_Wes(min=0)=33.55
+    "Rated power in East and West Zone"
+    annotation(Dialog(tab="GUV"));
+  parameter Real kpow_GUV_Cor(min=0)=251
+    "Rated power in Core Zone"
+    annotation(Dialog(tab="GUV"));
+  parameter Real eff[Medium.nC](
+    max=1,
+    min=0)=eff
+    "Virus removal efficiency"
+    annotation(Dialog(tab="PAC"));
+
+  parameter Integer nPACs(min=0)=1
+    "Number of PACs"
+    annotation(Dialog(tab="PAC"));
+  parameter Real flowPAC_Sou_Nor(min=0)=0.094
+    "PAC flow rate for North and South Zone"
+     annotation(Dialog(tab="PAC"));
+  parameter Real flowPAC_Eas_Wes(min=0)=0.094
+    "PAC flow rate for East and West Zone"
+    annotation(Dialog(tab="PAC"));
+  parameter Real flowPAC_Cor(min=0)=0.094
+    "PAC flow rate for Core Zone"
+    annotation(Dialog(tab="PAC"));
+  parameter Real kpow_PAC_Sou_Nor(min=0)=67
+    "Rated power for South and North Zone"
+    annotation(Dialog(tab="PAC"));
+  parameter Real kpow_PAC_Eas_Wes(min=0)=116
+    "Rated power for East and West Zone"
+    annotation(Dialog(tab="PAC"));
+  parameter Real kpow_PAC_Cor(min=0)=318
+    "Rated power"
+    annotation(Dialog(tab="PAC"));
+
+
 
   Buildings.ThermalZones.Detailed.MixedAir_virus sou(
     redeclare package Medium = Medium,
@@ -132,14 +186,14 @@ model Floor_virus "Model of a floor of the building"
     nSurBou=0,
     use_C_flow=true,
     kdec=kdec,
-    frad=0,
-    Eavg=0,
-    krad={0,0},
-    kpow_GUV=0,
-    eff={0,0},
-    nPACs=0,
-    flowPAC=0,
-    kpow_PAC=0,
+    frad=frad,
+    Eavg=Eavg,
+    krad=krad,
+    kpow_GUV=kpow_GUV_Sou_Nor,
+    eff=eff,
+    nPACs=nPACs,
+    flowPAC=flowPAC_Sou_Nor,
+    kpow_PAC=kpow_PAC_Sou_Nor,
     nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -178,14 +232,14 @@ model Floor_virus "Model of a floor of the building"
       til={Buildings.Types.Tilt.Wall, Buildings.Types.Tilt.Wall}),
     use_C_flow=true,
     kdec=kdec,
-    frad=0,
-    Eavg=0,
-    krad={0,0},
-    kpow_GUV=0,
-    eff={0,0},
-    nPACs=0,
-    flowPAC=0,
-    kpow_PAC=0,
+    frad=frad,
+    Eavg=Eavg,
+    krad=krad,
+    kpow_GUV=kpow_GUV_Eas_Wes,
+    eff=eff,
+    nPACs=nPACs,
+    flowPAC=flowPAC_Eas_Wes,
+    kpow_PAC=kpow_PAC_Eas_Wes,
     nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -219,14 +273,14 @@ model Floor_virus "Model of a floor of the building"
     nSurBou=0,
     use_C_flow=true,
     kdec=kdec,
-    frad=0,
-    Eavg=0,
-    krad={0,0},
-    kpow_GUV=0,
-    eff={0,0},
-    nPACs=0,
-    flowPAC=0,
-    kpow_PAC=0,
+    frad=frad,
+    Eavg=Eavg,
+    krad=krad,
+    kpow_GUV=kpow_GUV_Sou_Nor,
+    eff=eff,
+    nPACs=nPACs,
+    flowPAC=flowPAC_Sou_Nor,
+    kpow_PAC=kpow_PAC_Sou_Nor,
     nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -265,14 +319,14 @@ model Floor_virus "Model of a floor of the building"
       til={Buildings.Types.Tilt.Wall, Buildings.Types.Tilt.Wall}),
     use_C_flow=true,
     kdec=kdec,
-    frad=0,
-    Eavg=0,
-    krad={0,0},
-    kpow_GUV=0,
-    eff={0,0},
-    nPACs=0,
-    flowPAC=0,
-    kpow_PAC=0,
+    frad=frad,
+    Eavg=Eavg,
+    krad=krad,
+    kpow_GUV=kpow_GUV_Eas_Wes,
+    eff=eff,
+    nPACs=nPACs,
+    flowPAC=flowPAC_Eas_Wes,
+    kpow_PAC=kpow_PAC_Eas_Wes,
     nPorts=5,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -298,14 +352,14 @@ model Floor_virus "Model of a floor of the building"
       til={Buildings.Types.Tilt.Wall, Buildings.Types.Tilt.Wall, Buildings.Types.Tilt.Wall, Buildings.Types.Tilt.Wall}),
     use_C_flow=true,
     kdec=kdec,
-    frad=0,
-    Eavg=0,
-    krad={0,0},
-    kpow_GUV=0,
-    eff={0,0},
-    nPACs=0,
-    flowPAC=0,
-    kpow_PAC=0,
+    frad=frad,
+    Eavg=Eavg,
+    krad=krad,
+    kpow_GUV=kpow_GUV_Cor,
+    eff=eff,
+    nPACs=nPACs,
+    flowPAC=flowPAC_Cor,
+    kpow_PAC=kpow_PAC_Cor,
     nPorts=11,
     intConMod=intConMod,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -344,7 +398,7 @@ model Floor_virus "Model of a floor of the building"
     "Schedule of Sick People"
     annotation (Placement(transformation(extent={{-142,46},{-122,66}})));
   Modelica.Blocks.Math.Gain gaiCov(k=5/3600)
-    annotation (Placement(transformation(extent={{-100,46},{-80,66}})));
+    annotation (Placement(transformation(extent={{-106,50},{-86,70}})));
   Modelica.Blocks.Interfaces.BooleanInput u_on_off annotation (Placement(
         transformation(extent={{-104,-58},{-80,-34}}), iconTransformation(
           extent={{-104,-58},{-80,-34}})));
@@ -377,7 +431,7 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(nor.surf_conBou[3], wes.surf_surBou[1]) annotation (Line(
-      points={{168,120.333},{168,100},{60,100},{60,20},{28.2,20},{28.2,41.75}},
+      points={{168,120.333},{168,150},{42,150},{42,70},{28.2,70},{28.2,41.75}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(wes.surf_conBou[1], cor.surf_surBou[4]) annotation (Line(
@@ -665,8 +719,9 @@ equation
           -72,64},{-16,64},{-16,56},{4,56},{4,28},{32,28},{32,24},{124,24},{124,
           104},{272,104},{272,78.8},{302.4,78.8}}, color={0,0,127}));
   connect(sickPeople.y[1], gaiCov.u)
-    annotation (Line(points={{-121,56},{-102,56}}, color={0,0,127}));
-  connect(gaiCov.y, sou.C_flow[2]) annotation (Line(points={{-79,56},{-72,56},{
+    annotation (Line(points={{-121,56},{-114,56},{-114,60},{-108,60}},
+                                                   color={0,0,127}));
+  connect(gaiCov.y, sou.C_flow[2]) annotation (Line(points={{-85,60},{-72,60},{
           -72,64},{-16,64},{-16,56},{4,56},{4,28},{32,28},{32,24},{140,24},{140,
           -12},{142.4,-12},{142.4,-21.2}}, color={0,0,127}));
   connect(u_on_off, wes.u_on_off) annotation (Line(points={{-92,-46},{8,-46},{8,
@@ -692,9 +747,9 @@ equation
           -58},{-112,-20},{-80,-20},{-80,-4},{-72,-4},{-72,64},{-16,64},{-16,56},
           {4,56},{4,28},{32,28},{32,24},{124,24},{124,104},{272,104},{272,78.8},
           {302.4,78.8}}, color={0,0,127}));
-  connect(const2.y, cor.C_flow[2]) annotation (Line(points={{-125,-58},{-112,
-          -58},{-112,-20},{-80,-20},{-80,-4},{-72,-4},{-72,64},{-16,64},{-16,56},
-          {4,56},{4,28},{32,28},{32,24},{124,24},{124,58.8},{142.4,58.8}},
+  connect(const2.y, cor.C_flow[2]) annotation (Line(points={{-125,-58},{-106,
+          -58},{-106,-22},{-74,-22},{-74,-6},{-66,-6},{-66,62},{-10,62},{-10,54},
+          {10,54},{10,26},{38,26},{38,22},{130,22},{130,58.8},{142.4,58.8}},
         color={0,0,127}));
  annotation (Line(points={{-79,56},{-72,56},{
           -72,64},{-16,64},{-16,56},{4,56},{4,28},{32,28},{32,24},{124,24},{124,

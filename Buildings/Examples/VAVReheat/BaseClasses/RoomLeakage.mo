@@ -15,7 +15,8 @@ model RoomLeakage "Room leakage model"
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
         Medium) annotation (Placement(transformation(extent={{90,-10},{110,10}})));
   Buildings.Fluid.Sources.Outside_CpLowRise
-                        amb(redeclare package Medium = Medium, nPorts=1,
+                        amb(redeclare package Medium = Medium,
+    C={16e-6,0},                                               nPorts=1,
     s=s,
     azi=azi,
     Cp0=if use_windPressure then 0.6 else 0)

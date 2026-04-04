@@ -1,6 +1,6 @@
 within Buildings.Fluid.FixedResistances;
 model InDuctGUVCalc "HVAC filter"
-  extends Buildings.Fluid.BaseClasses.PartialInDuctGUVCalc(
+  extends Buildings.Fluid.BaseClasses.PartialInDuctGUVCalc(kGUV=kGUV,
     final m_flow_turbulent = if computeFlowResistance then deltaM * m_flow_nominal_pos else 0);
 
   parameter Real deltaM(min=1E-6)=0.3
