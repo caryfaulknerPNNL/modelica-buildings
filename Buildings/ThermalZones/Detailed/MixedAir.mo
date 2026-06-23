@@ -9,7 +9,7 @@ model MixedAir "Model of a room in which the air is completely mixed"
     final X_start=X_start,
     final C_start=C_start,
     final C_nominal=C_nominal,
-    final mSenFac=mSenFac,
+    final mSenFac=8,
     final m_flow_nominal=m_flow_nominal,
     final homotopyInitialization=homotopyInitialization,
     final conMod=intConMod,
@@ -47,7 +47,7 @@ model MixedAir "Model of a room in which the air is completely mixed"
     "Type of energy balance for zone air: dynamic (3 initialization options) or steady state"
     annotation(Evaluate=true, Dialog(tab = "Dynamics", group="Zone air"));
 
-  parameter Real mSenFac(min=1)=1
+  parameter Real mSenFac(min=1)=8
     "Factor for scaling the sensible thermal mass of the zone air volume"
     annotation(Dialog(tab="Dynamics", group="Zone air"));
 
