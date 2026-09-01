@@ -26,9 +26,9 @@ model ASHRAE2006_Dev
       flowPAC_Sou_Nor=1.2*0.14,
       flowPAC_Eas_Wes=0.106,
       flowPAC_Cor=0.796,
-      kpow_PAC_Sou_Nor=67,
-      kpow_PAC_Eas_Wes=42,
-      kpow_PAC_Cor=318),
+      kpow_PAC_Sou_Nor=33.5,
+      kpow_PAC_Eas_Wes=21,
+      kpow_PAC_Cor=159),
     weaDat(filNam=Modelica.Utilities.Files.loadResource(
           "modelica://Buildings/Resources/weatherdata/USA_CO_Denver.Intl.AP.725650_TMY3.mos")));
 

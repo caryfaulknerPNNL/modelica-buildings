@@ -9,8 +9,8 @@ model ASHRAE2006_filt
       C={16e-6,0},
         nPorts=3),
     filt(allowFlowReversal=true,
-      dp_nominal=187,
-      eff={0.69,0.77}),
+      dp_nominal=172,
+      eff={0.27,0.34}),
     fanSup(per(pressure(dp=2*{780 + 10 + 200 + dpBuiStaSet,0}))),
     inDucGUV(
       dp_nominal=0,

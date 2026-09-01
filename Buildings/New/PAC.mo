@@ -4,7 +4,7 @@ model PAC "In-room portable air cleaner"
   replaceable package Medium =
     Modelica.Media.Interfaces.PartialMedium "Medium in the component";
 
-  parameter Real eff[Medium.nC](min=0, max=1) = 0.9997
+  parameter Real eff[Medium.nC](min=0, max=1.1) = 0.9997
     "Virus removal efficiency";
 
   parameter Integer nPACs(min=0) = 1
